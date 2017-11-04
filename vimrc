@@ -5,12 +5,18 @@ function! LoadIf(cond, ...)
     return a:cond ? opts : extend(opts, {'on': [], 'for': [] })
 endfunction
 
-call plug#begin(has('windows') ? '~/vimfiles/bindle' : '~/.vim/bundle')
+call plug#begin(has('win32') ? '~/vimfiles/bundle' : '~/.vim/bundle')
+if has('nvim')
+    let has_async = has('timers')
+else
+    let has_async = has('job') && has('channel') && has('timers')
+endif
 
 " Look and feel
 Plug 'vim-scripts/xterm16.vim'
 Plug 'altercation/vim-colors-solarized'
-Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 "Plug 'vim-scripts/let-modeline.vim'
 "Plug 'scrooloose/nerdtree'
 "Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -20,15 +26,17 @@ Plug 'jlanzarotta/bufexplorer'
 Plug 'easymotion/vim-easymotion'
 Plug 'ervandew/supertab'
 Plug 'jiangmiao/auto-pairs'
-Plug 'kien/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 Plug 'sjl/gundo.vim'
 Plug 'tomtom/tcomment_vim' " gc{motion}, gc<count>c{motion}, gcc
 Plug 'tpope/vim-surround'
 
 " Behavior/Integration
-"Plug 'SirVer/ultisnips'
+Plug 'SirVer/ultisnips', LoadIf(has('python3'))
+Plug 'honza/vim-snippets'
 Plug 'mattn/emmet-vim'
-Plug 'vim-syntastic/syntastic'
+Plug 'vim-syntastic/syntastic', LoadIf(!has_async)
+Plug 'w0rp/ale', LoadIf(has_async)
 
 " Version Control
 "Plug 'http://repo.or.cz/r/vcscommand.git'
@@ -42,12 +50,13 @@ Plug 'tpope/vim-fugitive'
 "Plug 'Shougo/echodoc.vim',   LoadIf(has('nvim'))
 
 " Languages
-"Plug 'othree/xml.vim'
-"Plug 'Valloric/YouCompleteMe'
+Plug 'HerringtonDarkholme/yats.vim'
 "Plug 'Rip-Rip/clang_complete'
-"Plug 'fsharp/vim-fsharp'
-"Plug 'HerringtonDarkholme/yats.vim'
+"Plug 'Valloric/YouCompleteMe'
+"Plug 'fsharp/vim-fsharp', {'for': 'fsharp'}
 "Plug 'mhartington/nvim-typescript'
+"Plug 'othree/xml.vim'
+Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
 
 call plug#end()
 
@@ -82,16 +91,18 @@ set completeopt=menu,longest,preview
 set confirm
 " always show status line (also:vim-airline)
 set laststatus=2
+" airline already displays mode
+set noshowmode
 
 if has('gui_running')
     set guioptions=agim
-    set columns=100
+    set columns=120
     set lines=40
-	if has('windows')
-		set guifont=Liberation_Mono:h11
-	else
-		set guifont=Liberation\ Mono\ 11
-	endif
+    if has('gui_win32')
+        set guifont=Liberation_Mono:h11
+    else
+        set guifont=Liberation\ Mono\ 11
+    endif
 endif
 
 "-------------------------------------------------------------------------------
@@ -238,7 +249,10 @@ let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_root_markers = ['Makefile', '*.spec', 'package.json']
-
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/](\.git|\.hg|\.svn|node_modules)$',
+  \ 'file': '\v\.(exe|so|dll)$',
+  \ }
 "-------------------------------------------------------------------------------
 " Gundo
 "-------------------------------------------------------------------------------
