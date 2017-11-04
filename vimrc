@@ -84,10 +84,14 @@ set confirm
 set laststatus=2
 
 if has('gui_running')
-    set guifont=Liberation\ Mono\ 11
     set guioptions=agim
     set columns=100
     set lines=40
+	if has('windows')
+		set guifont=Liberation_Mono:h11
+	else
+		set guifont=Liberation\ Mono\ 11
+	endif
 endif
 
 "-------------------------------------------------------------------------------
@@ -134,11 +138,11 @@ set t_Co=256
 let xterm16_colormap    = 'soft'
 "let xterm16_brightness  = 'high'
 let xterm16bg_Normal    = 'none'
-colo xterm16
+"colo xterm16
 
 let g:solarized_termcolors=256
 let g:solarized_termtrans=1
-"colo solarized
+colo solarized
 
 "-------------------------------------------------------------------------------
 " SPELLCHECK CONFIGURATION
