@@ -248,11 +248,17 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | Ex . | endif
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_root_markers = ['Makefile', '*.spec', 'package.json']
+let g:ctrlp_root_markers = ['Makefile', '*.spec']
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/](\.git|\.hg|\.svn|node_modules)$',
   \ 'file': '\v\.(exe|so|dll)$',
   \ }
+let g:ctrlp_user_command = {
+	\ 'types': {
+		\ 1: ['.git', 'git -C %s ls-files . -co --exclude-standard'],
+		\ 2: ['.hg',  'hg --cwd %s locate -I .'],
+		\ }
+	\ }
 "-------------------------------------------------------------------------------
 " Gundo
 "-------------------------------------------------------------------------------
