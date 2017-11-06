@@ -38,6 +38,9 @@ Plug 'mattn/emmet-vim'
 Plug 'vim-syntastic/syntastic', LoadIf(!has_async)
 Plug 'w0rp/ale', LoadIf(has_async)
 
+" Required to run tsuquyomi with vim7/neovim
+"Plug 'Shougo/vimproc.vim'
+
 " Version Control
 "Plug 'http://repo.or.cz/r/vcscommand.git'
 Plug 'airblade/vim-gitgutter'
@@ -51,6 +54,7 @@ Plug 'tpope/vim-fugitive'
 
 " Languages
 Plug 'HerringtonDarkholme/yats.vim'
+Plug 'Quramy/tsuquyomi'
 "Plug 'Rip-Rip/clang_complete'
 "Plug 'Valloric/YouCompleteMe'
 "Plug 'fsharp/vim-fsharp', {'for': 'fsharp'}
@@ -73,6 +77,7 @@ set showcmd         " display incomplete commands
 set incsearch       " do incremental searching
 set tabstop=4
 set shiftwidth=4    " 4 characters for indenting
+set expandtab
 set number          " line numbers
 set cindent
 set autoindent
@@ -255,7 +260,7 @@ let g:ctrlp_custom_ignore = {
   \ }
 let g:ctrlp_user_command = {
 	\ 'types': {
-		\ 1: ['.git', 'git -C %s ls-files . -co --exclude-standard'],
+		\ 1: ['.git', 'cd %s && git ls-files . -co --exclude-standard'],
 		\ 2: ['.hg',  'hg --cwd %s locate -I .'],
 		\ }
 	\ }
