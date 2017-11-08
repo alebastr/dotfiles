@@ -271,6 +271,10 @@ let g:ctrlp_user_command = {
 nnoremap <F5> :GundoToggle<CR>
 let g:gundo_right = 1
 
+" https://bitbucket.org/sjl/gundo.vim/issues/42
+if has('python3')
+    let g:gundo_prefer_python3 = 1
+endif
 "-------------------------------------------------------------------------------
 " NERDTree
 "-------------------------------------------------------------------------------
