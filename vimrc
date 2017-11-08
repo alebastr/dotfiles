@@ -149,16 +149,17 @@ inoremap  ,  ,<Space>
 " Theme settings
 "-------------------------------------------------------------------------------
 set background=dark
-set t_Co=256
-
-let xterm16_colormap    = 'soft'
-"let xterm16_brightness  = 'high'
-let xterm16bg_Normal    = 'none'
-"colo xterm16
-
+"let xterm16_brightness='high'
+let xterm16_colormap='soft'
+let xterm16bg_Normal='none'
 let g:solarized_termcolors=256
 let g:solarized_termtrans=1
-colo solarized
+
+" check if we are not running in powershell or cmd text mode
+if !has('win32') || has('gui_running')
+    set t_Co=256
+    colo solarized
+endif
 
 "-------------------------------------------------------------------------------
 " SPELLCHECK CONFIGURATION
@@ -259,11 +260,11 @@ let g:ctrlp_custom_ignore = {
   \ 'file': '\v\.(exe|so|dll)$',
   \ }
 let g:ctrlp_user_command = {
-	\ 'types': {
-		\ 1: ['.git', 'cd %s && git ls-files . -co --exclude-standard'],
-		\ 2: ['.hg',  'hg --cwd %s locate -I .'],
-		\ }
-	\ }
+  \ 'types': {
+      \ 1: ['.git', 'cd %s && git ls-files . -co --exclude-standard'],
+      \ 2: ['.hg',  'hg --cwd %s locate -I .'],
+      \ }
+  \ }
 "-------------------------------------------------------------------------------
 " Gundo
 "-------------------------------------------------------------------------------
