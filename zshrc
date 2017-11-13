@@ -45,6 +45,30 @@ bindkey -v
 ## do not use Ctrl-S and Ctrl-Q for flow control
 stty -ixon -ixoff
 
+## load plugins
+export ZPLUG_HOME=~/.zplug
+
+if [ ! -f "$ZPLUG_HOME/init.zsh" ]; then
+    git clone https://github.com/zplug/zplug.git "$ZPLUG_HOME"
+fi
+if [ -f "$ZPLUG_HOME/init.zsh" ]; then
+    source "$ZPLUG_HOME/init.zsh"
+
+    zplug "MichaelAquilina/zsh-you-should-use"
+    zplug "zsh-users/zsh-completions"
+#    zplug "zsh-users/zsh-syntax-highlighting"
+    zplug "zdharma/fast-syntax-highlighting"
+
+    if ! zplug check --verbose; then
+        printf "Install? [y/N]: "
+        if read -q; then
+            echo; zplug install
+        fi
+    fi
+
+    zplug load
+fi
+
 ## load local configuration
 test -e ~/.env.local   && source ~/.env.local
 test -e ~/.zshrc.local && source ~/.zshrc.local
