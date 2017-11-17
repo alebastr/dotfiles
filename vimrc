@@ -54,6 +54,7 @@ Plug 'tpope/vim-fugitive'
 
 " Languages
 Plug 'HerringtonDarkholme/yats.vim'
+Plug 'PProvost/vim-ps1'
 Plug 'Quramy/tsuquyomi'
 "Plug 'Rip-Rip/clang_complete'
 "Plug 'Valloric/YouCompleteMe'
