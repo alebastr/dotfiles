@@ -105,7 +105,9 @@ if has('gui_running')
     set columns=120
     set lines=40
     if has('gui_win32')
-        set guifont=Liberation_Mono:h11
+        set encoding=utf-8
+        set renderoptions=type:directx
+        set guifont=Fira_Code:h11
     else
         set guifont=Liberation\ Mono\ 11
     endif
