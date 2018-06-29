@@ -6,11 +6,7 @@ function! LoadIf(cond, ...)
 endfunction
 
 call plug#begin(has('win32') ? '~/vimfiles/bundle' : '~/.vim/bundle')
-if has('nvim')
-    let has_async = has('timers')
-else
-    let has_async = has('job') && has('channel') && has('timers')
-endif
+let has_async = has('timers') && ((has('job') && has('channel')) || has('nvim'))
 
 " Look and feel
 Plug 'vim-scripts/xterm16.vim'
@@ -47,7 +43,11 @@ Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 
 " Language Server
-"Plug 'autozimu/LanguageClient-neovim', LoadIf(has('nvim'), {'do': ':UpdateRemotePlugins'})
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': (has('win32') ? 'powershell.exe -ExecutionPolicy Bypass -File install.ps1'
+            \ : 'bash install.sh')
+    \ }
 "Plug 'Shougo/denite.nvim',   LoadIf(has('nvim'))
 "Plug 'Shougo/deoplete.nvim', LoadIf(has('nvim'))
 "Plug 'Shougo/echodoc.vim',   LoadIf(has('nvim'))
@@ -62,6 +62,7 @@ Plug 'Quramy/tsuquyomi'
 "Plug 'mhartington/nvim-typescript'
 "Plug 'othree/xml.vim'
 Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
+Plug 'rust-lang/rust.vim'
 
 call plug#end()
 
@@ -88,7 +89,8 @@ set scrolljump=5
 set scrolloff=5     " 5 lines bevore and after the current line when scrolling
 set ignorecase      " ignore case
 set smartcase       " but don't ignore it, when search string contains uppercase letters
-set hid             " allow switching buffers, which have unsaved changes
+set hidden          " allow switching buffers, which have unsaved changes
+set signcolumn=yes  " Always show sign column
 set showmatch       " showmatch: Show the matching bracket for the last ')'?
 set novisualbell    " visual bell instead of beeping
 set wildignore=*.bak,*.o,*.e,*~ " wildmenu: ignore these extensions
@@ -207,13 +209,23 @@ let g:lisp_rainbow = 1
 "-------------------------------------------------------------------------------
 " Language Servers
 "-------------------------------------------------------------------------------
+function! s:cmd(name, ...)
+    return (has('win32')
+        \ ? a:name . '.' . (a:0 ? a:1 : 'exe')
+        \ : a:name)
+endfunction
+
 let g:LanguageClient_serverCommands = {
-    \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
-    \ 'javascript': ['~/.npm-global/bin/javascript-typescript-langserver'],
-    \ 'typescript': ['~/.npm-global/bin/javascript-typescript-langserver']
+    \ 'rust': [s:cmd('rustup'), 'run', 'stable', 'rls'],
+    \ 'javascript': [s:cmd('javascript-typescript-stdio', 'cmd')],
+    \ 'typescript': [s:cmd('javascript-typescript-stdio', 'cmd')]
     \ }
 " Automatically start language servers.
 let g:LanguageClient_autoStart = 1
+"let g:LanguageClient_loggingFile = 'C:\\Temp\\LanguageClient.log'
+"let g:LanguageClient_loggingLevel = 'DEBUG'
+"let g:LanguageClient_serverStderr = 'C:\\Temp\\LanguageServer.log'
+"nnoremap <F5> :call LanguageClient_contextMenu()<CR>
 nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
 nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
 nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
@@ -238,6 +250,7 @@ let g:clang_complete_auto = 0
 " deoplete
 "-------------------------------------------------------------------------------
 "let g:deoplete#enable_at_startup = 1
+"let g:python3_host_prog = 'python'
 
 "-------------------------------------------------------------------------------
 " netrw
