@@ -209,16 +209,18 @@ let g:lisp_rainbow = 1
 "-------------------------------------------------------------------------------
 " Language Servers
 "-------------------------------------------------------------------------------
-function! s:cmd(name, ...)
-    return (has('win32')
-        \ ? a:name . '.' . (a:0 ? a:1 : 'exe')
-        \ : a:name)
+function! s:cmd(...)
+    if has('win32')
+        return ['cmd', '/C'] + a:000
+    else
+        return a:000
+    endif
 endfunction
 
 let g:LanguageClient_serverCommands = {
-    \ 'rust': [s:cmd('rustup'), 'run', 'stable', 'rls'],
-    \ 'javascript': [s:cmd('javascript-typescript-stdio', 'cmd')],
-    \ 'typescript': [s:cmd('javascript-typescript-stdio', 'cmd')]
+    \ 'rust': s:cmd('rustup', 'run', 'stable', 'rls'),
+    \ 'javascript': s:cmd('javascript-typescript-stdio'),
+    \ 'typescript': s:cmd('javascript-typescript-stdio')
     \ }
 " Automatically start language servers.
 let g:LanguageClient_autoStart = 1
