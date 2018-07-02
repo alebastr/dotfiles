@@ -10,7 +10,8 @@ let has_async = has('timers') && ((has('job') && has('channel')) || has('nvim'))
 
 " Look and feel
 Plug 'vim-scripts/xterm16.vim'
-Plug 'altercation/vim-colors-solarized'
+"Plug 'altercation/vim-colors-solarized'
+Plug 'lifepillar/vim-solarized8'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 "Plug 'vim-scripts/let-modeline.vim'
@@ -102,7 +103,26 @@ set laststatus=2
 " airline already displays mode
 set noshowmode
 
-if has('gui_running')
+"-------------------------------------------------------------------------------
+" Look and Theme settings
+"-------------------------------------------------------------------------------
+set background=dark
+"let xterm16_brightness='high'
+let xterm16_colormap='soft'
+let xterm16bg_Normal='none'
+let g:solarized_termcolors=256
+"let g:solarized_termtrans=1
+if has('termguicolors') && $COLORTERM ==# 'truecolor'
+    set termguicolors
+endif
+
+" check if we are not running in powershell or cmd text mode
+if !has('win32') || has('gui_running')
+    set t_Co=256
+    colo solarized8
+endif
+
+function! InitGVim()
     set guioptions=agim
     set columns=120
     set lines=40
@@ -110,11 +130,21 @@ if has('gui_running')
         set encoding=utf-8
         set renderoptions=type:directx
         set guifont=Fira_Code:h11
+    elseif has('nvim')
+        GuiFont Liberation Mono:h11
     else
         set guifont=Liberation\ Mono\ 11
     endif
-endif
+    colo solarized8
+endfunction
 
+" Workaround for https://github.com/equalsraf/neovim-qt/issues/94
+" this requires adding 'doautocmd GUIEnter' into ginit.vim
+if has('gui_running')
+    call InitGVim()
+else
+    autocmd GUIEnter * call InitGVim()
+endif
 "-------------------------------------------------------------------------------
 "  highlight paired brackets
 "-------------------------------------------------------------------------------
@@ -149,22 +179,6 @@ inoremap  ,  ,<Space>
 "if has("autocmd")
 "  autocmd BufEnter * :lchdir %:p:h
 "endif
-
-"-------------------------------------------------------------------------------
-" Theme settings
-"-------------------------------------------------------------------------------
-set background=dark
-"let xterm16_brightness='high'
-let xterm16_colormap='soft'
-let xterm16bg_Normal='none'
-let g:solarized_termcolors=256
-let g:solarized_termtrans=1
-
-" check if we are not running in powershell or cmd text mode
-if !has('win32') || has('gui_running')
-    set t_Co=256
-    colo solarized
-endif
 
 "-------------------------------------------------------------------------------
 " SPELLCHECK CONFIGURATION
@@ -207,7 +221,7 @@ let g:lisp_rainbow = 1
 "===============================================================================
 
 "-------------------------------------------------------------------------------
-" Language Servers
+" Language servers and plugins
 "-------------------------------------------------------------------------------
 function! s:cmd(...)
     if has('win32')
@@ -264,7 +278,8 @@ let g:netrw_preview=1
 let g:netrw_winsize=-25
 
 autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | Ex . | endif
+" Disabled as it bugs nvim-qt
+" autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | Ex . | endif
 
 "-------------------------------------------------------------------------------
 " CtrlP
