@@ -11,7 +11,8 @@ let has_async = has('timers') && ((has('job') && has('channel')) || has('nvim'))
 " Look and feel
 Plug 'vim-scripts/xterm16.vim'
 "Plug 'altercation/vim-colors-solarized'
-Plug 'lifepillar/vim-solarized8'
+"Plug 'lifepillar/vim-solarized8'
+Plug 'nanotech/jellybeans.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 "Plug 'vim-scripts/let-modeline.vim'
@@ -106,6 +107,7 @@ set noshowmode
 "-------------------------------------------------------------------------------
 " Look and Theme settings
 "-------------------------------------------------------------------------------
+let s:theme='jellybeans'
 set background=dark
 "let xterm16_brightness='high'
 let xterm16_colormap='soft'
@@ -119,7 +121,7 @@ endif
 " check if we are not running in powershell or cmd text mode
 if !has('win32') || has('gui_running')
     set t_Co=256
-    colo solarized8
+    exec 'colo' s:theme
 endif
 
 function! InitGVim()
@@ -135,7 +137,7 @@ function! InitGVim()
     else
         set guifont=Liberation\ Mono\ 11
     endif
-    colo solarized8
+    exec 'colo' s:theme
 endfunction
 
 " Workaround for https://github.com/equalsraf/neovim-qt/issues/94
