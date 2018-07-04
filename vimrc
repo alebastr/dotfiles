@@ -8,6 +8,14 @@ endfunction
 call plug#begin(has('win32') ? '~/vimfiles/bundle' : '~/.vim/bundle')
 let has_async = has('timers') && ((has('job') && has('channel')) || has('nvim'))
 
+" Workaround for vim/vim#3117
+try | exec 'pythonx' 'pass' | catch | endtry
+" Check that (n)vim is capablle of running neovim remote plugins
+" and load shims if necessary
+let has_nvim_rpc=has('nvim') || (version >= 800 && has('python3'))
+Plug 'roxma/nvim-yarp', LoadIf(has_nvim_rpc && !has('nvim'))
+Plug 'roxma/vim-hug-neovim-rpc', LoadIf(has_nvim_rpc && !has('nvim'))
+
 " Look and feel
 Plug 'vim-scripts/xterm16.vim'
 "Plug 'altercation/vim-colors-solarized'
@@ -50,9 +58,10 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ 'do': (has('win32') ? 'powershell.exe -ExecutionPolicy Bypass -File install.ps1'
             \ : 'bash install.sh')
     \ }
-"Plug 'Shougo/denite.nvim',   LoadIf(has('nvim'))
-"Plug 'Shougo/deoplete.nvim', LoadIf(has('nvim'))
-"Plug 'Shougo/echodoc.vim',   LoadIf(has('nvim'))
+
+" Completion
+Plug 'Shougo/deoplete.nvim', LoadIf(has_nvim_rpc, has('nvim') ? { 'do': ':UpdateRemotePlugins' } : {})
+Plug 'Shougo/denite.nvim',   LoadIf(has_nvim_rpc, has('nvim') ? { 'do': ':UpdateRemotePlugins' } : {})
 
 " Languages
 Plug 'HerringtonDarkholme/yats.vim'
@@ -66,6 +75,8 @@ Plug 'Quramy/tsuquyomi'
 Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
 Plug 'rust-lang/rust.vim'
 
+unlet has_async
+unlet has_nvim_rpc
 call plug#end()
 
 filetype plugin indent on
@@ -267,8 +278,8 @@ let g:clang_complete_auto = 0
 "-------------------------------------------------------------------------------
 " deoplete
 "-------------------------------------------------------------------------------
-"let g:deoplete#enable_at_startup = 1
-"let g:python3_host_prog = 'python'
+let g:deoplete#enable_at_startup = 1
+let g:python3_host_prog = 'python'
 
 "-------------------------------------------------------------------------------
 " netrw
