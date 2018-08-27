@@ -45,6 +45,11 @@ bindkey -v
 ## do not use Ctrl-S and Ctrl-Q for flow control
 stty -ixon -ixoff
 
+# connect to tmux default session in remote shells
+if [ -n $SSH_CONNECTION -a -z $TMUX -a $(command -v tmux) ]; then
+    tmux new -A -s default
+fi
+
 ## load plugins
 export ZPLUG_HOME=~/.zplug
 
