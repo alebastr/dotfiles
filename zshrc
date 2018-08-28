@@ -46,7 +46,7 @@ bindkey -v
 stty -ixon -ixoff
 
 # connect to tmux default session in remote shells
-if [ -n $SSH_CONNECTION -a -z $TMUX -a $(command -v tmux) ]; then
+if [ -n "$SSH_CONNECTION" -a -z "$TMUX" -a $(command -v tmux) ]; then
     tmux new -A -s default
 fi
 
