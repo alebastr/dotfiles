@@ -1,4 +1,4 @@
-Set-PSReadLineOption -HistoryNoDuplicates
+Set-PSReadLineOption -HistoryNoDuplicates -ShowToolTips
 
 function Get-ParentProcName {
     $parentProcessId = (Get-WmiObject Win32_Process -Filter "ProcessId=$PID").ParentProcessId
