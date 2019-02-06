@@ -59,22 +59,22 @@ Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 
 " Language Server
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': (has('win32') ? 'powershell.exe -ExecutionPolicy Bypass -File install.ps1'
-            \ : 'bash install.sh')
-    \ }
-
+"Plug 'autozimu/LanguageClient-neovim', {
+"    \ 'branch': 'next',
+"    \ 'do': (has('win32') ? 'powershell.exe -ExecutionPolicy Bypass -File install.ps1'
+"            \ : 'bash install.sh')
+"    \ }
+"
 " Completion
-Plug 'Shougo/deoplete.nvim', LoadIf(has_nvim_rpc, has('nvim') ? { 'do': ':UpdateRemotePlugins' } : {})
-Plug 'Shougo/denite.nvim',   LoadIf(has_nvim_rpc, has('nvim') ? { 'do': ':UpdateRemotePlugins' } : {})
+"Plug 'Shougo/deoplete.nvim', LoadIf(has_nvim_rpc, has('nvim') ? { 'do': ':UpdateRemotePlugins' } : {})
+"Plug 'Shougo/denite.nvim',   LoadIf(has_nvim_rpc, has('nvim') ? { 'do': ':UpdateRemotePlugins' } : {})
+Plug 'Valloric/YouCompleteMe'
 
 " Languages
 Plug 'HerringtonDarkholme/yats.vim'
 Plug 'PProvost/vim-ps1'
-Plug 'Quramy/tsuquyomi'
+"Plug 'Quramy/tsuquyomi'
 "Plug 'Rip-Rip/clang_complete'
-"Plug 'Valloric/YouCompleteMe'
 "Plug 'fsharp/vim-fsharp', {'for': 'fsharp'}
 "Plug 'mhartington/nvim-typescript'
 "Plug 'othree/xml.vim'
@@ -91,6 +91,7 @@ syntax enable
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 "set nobackup       " DON'T keep a backup file
+set encoding=utf-8
 set fileencodings=utf-8,cp1251,koi8-r,default
 set history=50      " keep 50 lines of command line history
 set ruler           " show the cursor position all the time
@@ -264,14 +265,27 @@ let g:LanguageClient_autoStart = 1
 "let g:LanguageClient_loggingLevel = 'DEBUG'
 "let g:LanguageClient_serverStderr = 'C:\\Temp\\LanguageServer.log'
 "nnoremap <F5> :call LanguageClient_contextMenu()<CR>
-nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
-nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+"nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+"nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+"nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
 
 "-------------------------------------------------------------------------------
 " YouCompleteMe
 "-------------------------------------------------------------------------------
 let g:ycm_auto_trigger = 0
+
+" YCM and UltiSnips compatibility
+let g:UltiSnipsExpandTrigger = "<nop>"
+let g:ulti_expand_or_jump_res = 0
+function ExpandSnippetOrCarriageReturn()
+    let snippet = UltiSnips#ExpandSnippetOrJump()
+    if g:ulti_expand_or_jump_res > 0
+        return snippet
+    else
+        return "\<CR>"
+    endif
+endfunction
+inoremap <expr> <CR> pumvisible() ? "<C-R>=ExpandSnippetOrCarriageReturn()<CR>" : "\<CR>"
 
 "-------------------------------------------------------------------------------
 " clang_complete
