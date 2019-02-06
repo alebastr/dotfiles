@@ -32,10 +32,16 @@ Plug 'jlanzarotta/bufexplorer'
 Plug 'easymotion/vim-easymotion'
 Plug 'ervandew/supertab'
 Plug 'jiangmiao/auto-pairs'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'sjl/gundo.vim'
 Plug 'tomtom/tcomment_vim' " gc{motion}, gc<count>c{motion}, gcc
 Plug 'tpope/vim-surround'
+
+if executable('fzf')
+    Plug 'junegunn/fzf'
+    Plug 'junegunn/fzf.vim'
+else
+    Plug 'ctrlpvim/ctrlp.vim'
+endif
 
 " Behavior/Integration
 Plug 'SirVer/ultisnips', LoadIf(has('python3'))
@@ -311,6 +317,37 @@ let g:ctrlp_user_command = {
       \ 2: ['.hg',  'hg --cwd %s locate -I .'],
       \ }
   \ }
+" if executable('rg')
+"     let g:ctrlp_user_command = 'rg --files %s'
+"     let g:ctrlp_use_caching = 0
+"     let g:ctrlp_use_buffer = 'et'
+" endif
+"-------------------------------------------------------------------------------
+" FZF
+"-------------------------------------------------------------------------------
+if executable('fzf') && executable('rg')
+    set grepprg=rg\ --vimgrep
+
+    let $FZF_DEFAULT_COMMAND='rg --files --follow . 2> nul'
+
+    command! -bang -nargs=* Find
+      \ call fzf#vim#grep(
+      \   'rg --column --line-number --no-heading --color=always --smart-case --fixed-strings --hidden -L '.shellescape(<q-args>),
+      \   1,
+      \   <bang>0)
+
+    command! -bang -nargs=* Rg
+      \ call fzf#vim#grep(
+      \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
+      \   <bang>0 ? fzf#vim#with_preview('up:60%')
+      \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+      \   <bang>0)
+
+    nnoremap <c-p> :Files<CR>
+    nmap <leader><tab> <plug>(fzf-maps-n)
+    xmap <leader><tab> <plug>(fzf-maps-x)
+    omap <leader><tab> <plug>(fzf-maps-o)
+endif
 "-------------------------------------------------------------------------------
 " Gundo
 "-------------------------------------------------------------------------------
