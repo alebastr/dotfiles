@@ -151,6 +151,9 @@ function! InitGVim()
         set guifont=Fira_Code:h11
     elseif has('nvim')
         GuiFont Liberation Mono:h11
+        " Show text tabline and popups in nvim-qt
+        GuiTabline 0
+        GuiPopupmenu 0
     else
         set guifont=Liberation\ Mono\ 11
     endif
