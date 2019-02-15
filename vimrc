@@ -257,14 +257,20 @@ endfunction
 let g:LanguageClient_serverCommands = {
     \ 'rust': s:cmd('rustup', 'run', 'stable', 'rls'),
     \ 'javascript': s:cmd('javascript-typescript-stdio'),
-    \ 'typescript': s:cmd('javascript-typescript-stdio')
+    \ 'typescript': s:cmd('javascript-typescript-stdio'),
+    \ 'typescript.tsx': s:cmd('javascript-typescript-stdio')
     \ }
+
+let g:LanguageClient_rootMarkers = {
+    \ 'javascript.jsx': ['package.json'],
+    \ 'typescript': ['tsconfig.json', 'package.json'],
+    \ 'typescript.tsx': ['tsconfig.json', 'package.json']
+    \ }
+
 " Automatically start language servers.
 let g:LanguageClient_autoStart = 1
-"let g:LanguageClient_loggingFile = 'C:\\Temp\\LanguageClient.log'
-"let g:LanguageClient_loggingLevel = 'DEBUG'
-"let g:LanguageClient_serverStderr = 'C:\\Temp\\LanguageServer.log'
-"nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+
+"nnoremap <F4> :call LanguageClient_contextMenu()<CR>
 "nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
 "nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
 "nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
