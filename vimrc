@@ -49,6 +49,7 @@ Plug 'honza/vim-snippets'
 Plug 'mattn/emmet-vim'
 Plug 'vim-syntastic/syntastic', LoadIf(!has_async)
 Plug 'w0rp/ale', LoadIf(has_async)
+Plug 'sbdchd/neoformat'
 
 " Required to run tsuquyomi with vim7/neovim
 "Plug 'Shougo/vimproc.vim'
