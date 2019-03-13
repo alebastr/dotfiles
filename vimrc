@@ -133,8 +133,15 @@ let xterm16_colormap='soft'
 let xterm16bg_Normal='none'
 let g:solarized_termcolors=256
 "let g:solarized_termtrans=1
-if has('termguicolors') && $COLORTERM ==# 'truecolor'
+
+" Transparent background for Jellybeans
+let g:jellybeans_overrides = {
+\   'background': { 'ctermbg': 'none', '256ctermbg': 'none' }
+\}
+
+if has('nvim') && has('termguicolors') && $COLORTERM ==# 'truecolor'
     set termguicolors
+    let g:jellybeans_overrides['background']['guibg'] = 'none'
 endif
 
 " check if we are not running in powershell or cmd text mode
