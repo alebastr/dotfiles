@@ -10,7 +10,8 @@ set $term alacritty
 
 # Your preferred application launcher
 # Note: it's recommended that you pass the final command to sway
-set $menu dmenu_path | dmenu | xargs swaymsg exec
+set $menu     'rofi -show run'
+set $alt_menu 'rofi -show drun'
 
 # default wallpaper
 set $wallpaper ~/Pictures/current-wallpaper.jpg
@@ -86,7 +87,8 @@ bindsym $mod+Return exec $term
 bindsym $mod+Shift+c kill
 
 # start your launcher
-bindsym $mod+p exec $menu
+bindsym $mod+p       exec $menu
+bindsym $mod+Shift+p exec $alt_menu
 
 # lock screen
 bindsym $mod+l exec $lock

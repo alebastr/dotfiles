@@ -1,0 +1,6 @@
+rofi.font: Liberation Mono 12
+rofi.modi: run,drun
+rofi.run-command: swaymsg exec "{cmd}"
+rofi.show-icons: true
+rofi.terminal: alacritty
+rofi.theme: /usr/share/rofi/themes/android_notification.rasi
