@@ -19,10 +19,17 @@ set $wallpaper ~/Pictures/current-wallpaper.jpg
 # lock screen command
 set $lock "swaylock -f -s fill -i $wallpaper"
 
+# primary monitor output
+set $primary_output "eDP-1"
+
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
 output * bg ~/Pictures/current-wallpaper.jpg fill
+
+output $primary_output {
+    position 0 0
+}
 #
 # Example configuration:
 #
@@ -92,6 +99,10 @@ bindsym $mod+Shift+p exec $alt_menu
 
 # lock screen
 bindsym $mod+l exec $lock
+
+# screenshot
+bindsym Print      exec "grim -o $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name') $(xdg-user-dir PICTURES)/$(date +'%F-%T_grim.png')"
+bindsym Alt+Print  exec "grim -g \"$(slurp)\" $(xdg-user-dir PICTURES)/$(date +'%F-%T_grim.png')"
 
 # Drag floating windows by holding down $mod and left mouse button.
 # Resize them with right mouse button + $mod.
@@ -180,6 +191,12 @@ bindsym $mod+e focus output right
 
 # Focus previous screen.
 bindsym $mod+w focus output left
+
+# Move workspace to next screen
+bindsym $mod+Shift+e move workspace to output right
+
+# Move workspace to previous screen
+bindsym $mod+Shift+w move workspace to output left
 
 # Switch to next layout.
 bindsym $mod+space layout toggle splith splitv tabbed stacking

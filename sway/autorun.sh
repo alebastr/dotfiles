@@ -5,8 +5,7 @@ run() {
 		delay=$1; shift
 	fi
 	if ! pidof $1 >/dev/null; then
-#        echo "starting \"${@}\" in ${delay}";
-		(sleep $delay && $@)&
+		(sleep $delay && exec $@) &
 	fi
 }
 
