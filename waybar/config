@@ -38,7 +38,7 @@
         }
     },
     "tray": {
-        "spacing": 10
+        "spacing": 5
     },
     "clock": {
         "format": "{:%a, %d-%m-%Y %R}"
@@ -61,9 +61,12 @@
         "format-icons": ["", "", "", "", ""]
     },
     "network": {
-        "format-wifi": "{essid} ({signalStrength}%) ",
-        "format-ethernet": "{ifname}: {ipaddr}/{cidr} ",
-        "format-disconnected": "Disconnected ⚠"
+        "format-wifi": "",
+        "format-ethernet": "",
+        "format-disconnected": "⚠",
+        "tooltip-format-wifi": "{essid} ({signalStrength}%): {ipaddr}/{cidr} ",
+        "tooltip-format-ethernet": "{ifname}: {ipaddr}/{cidr} ",
+        "tooltip-format-disconnected": "Disconnected ⚠"
     },
     "pulseaudio": {
          "format": "{volume}% {icon}",
