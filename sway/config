@@ -80,6 +80,9 @@ input "2:7:SynPS/2_Synaptics_TouchPad" {
 bindsym XF86AudioRaiseVolume  exec pactl set-sink-volume 0 +3%
 bindsym XF86AudioLowerVolume  exec pactl set-sink-volume 0 -3%
 bindsym XF86AudioMute         exec pactl set-sink-mute 0 toggle
+bindsym XF86AudioNext         exec playerctl next
+bindsym XF86AudioPlay         exec playerctl play-pause
+bindsym XF86AudioPrev         exec playerctl previous
 bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
 bindsym XF86MonBrightnessUp   exec brightnessctl set +5%
 
@@ -249,6 +252,9 @@ for_window [class="Chromium-browser"] mark Browser
 for_window [class="pavucontrol-qt"] floating enable
 for_window [con_mark="Browser"] move container to workspace 2
 for_window [class="Spotify"] move container to workspace 3
+for_window [class="calibre"] move container to workspace 4
+for_window [class="Steam"] move container to workspace 6
+for_window [app_id="pinentry-qt"] floating enable
 
 default_border none
 
