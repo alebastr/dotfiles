@@ -11,6 +11,8 @@ window#waybar {
     background: rgba(0, 0, 0, 0.7);
     border-bottom: 2px solid rgba(100, 114, 125, 0.7);
     color: white;
+    transition-property: background, background-color;
+    transition-duration: .5s;
 }
 
 /* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
@@ -26,14 +28,17 @@ window#waybar {
     border-bottom: 2px solid white;
 }
 
+#workspaces button.urgent {
+    background-color: #eb4d4b;
+}
+
 #mode {
     background: red;
     border-bottom: 2px solid white;
 }
 
 #clock, #battery, #backlight, #network, #pulseaudio, #tray, #mode, #idle_inhibitor {
-    padding: 0 10px;
-    margin: 0;
+    padding: 4px 8px;
 }
 
 #battery.charging {

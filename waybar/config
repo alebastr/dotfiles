@@ -24,11 +24,25 @@
             "2": "",
             "3": "",
             "4": "",
-            "5": "",
+            "5": "",
+            "6": "",
             "urgent": "",
             "focused": "",
             "default": ""
         }
+    },
+    "custom/media": {
+        "format": "{}",
+        "return-type": "json",
+        "tooltip": true,
+        "max-length": 50,
+        "on-click": "playerctl play-pause",
+        "format-icons": {
+            "spotify": "",
+            "default": ""
+        },
+        "escape": true,
+        "exec": "~/dotfiles/waybar/mediaplayer.py 2>/dev/null"
     },
     "idle_inhibitor": {
         "format": "{icon}",
