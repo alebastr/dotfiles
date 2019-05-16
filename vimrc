@@ -332,6 +332,12 @@ autocmd StdinReadPre * let s:std_in=1
 " autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | Ex . | endif
 
 "-------------------------------------------------------------------------------
+" Airline 
+"-------------------------------------------------------------------------------
+let g:airline#extensions#branch#vcs_priority = ['git']
+let g:airline#extensions#branch#vcs_checks = []
+
+"-------------------------------------------------------------------------------
 " CtrlP
 "-------------------------------------------------------------------------------
 let g:ctrlp_map = '<c-p>'
