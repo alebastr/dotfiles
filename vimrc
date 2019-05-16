@@ -60,16 +60,16 @@ Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 
 " Language Server
-"Plug 'autozimu/LanguageClient-neovim', {
-"    \ 'branch': 'next',
-"    \ 'do': (has('win32') ? 'powershell.exe -ExecutionPolicy Bypass -File install.ps1'
-"            \ : 'bash install.sh')
-"    \ }
-"
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': (has('win32') ? 'powershell.exe -ExecutionPolicy Bypass -File install.ps1'
+            \ : 'bash install.sh')
+    \ }
+
 " Completion
-"Plug 'Shougo/deoplete.nvim', LoadIf(has_nvim_rpc, has('nvim') ? { 'do': ':UpdateRemotePlugins' } : {})
+Plug 'Shougo/deoplete.nvim', LoadIf(has_nvim_rpc, has('nvim') ? { 'do': ':UpdateRemotePlugins' } : {})
 "Plug 'Shougo/denite.nvim',   LoadIf(has_nvim_rpc, has('nvim') ? { 'do': ':UpdateRemotePlugins' } : {})
-Plug 'Valloric/YouCompleteMe'
+"Plug 'Valloric/YouCompleteMe'
 
 " Languages
 Plug 'HerringtonDarkholme/yats.vim'
@@ -278,10 +278,10 @@ let g:LanguageClient_rootMarkers = {
 " Automatically start language servers.
 let g:LanguageClient_autoStart = 1
 
-"nnoremap <F4> :call LanguageClient_contextMenu()<CR>
-"nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
-"nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-"nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+nnoremap <F4> :call LanguageClient_contextMenu()<CR>
+nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
 
 "-------------------------------------------------------------------------------
 " YouCompleteMe
