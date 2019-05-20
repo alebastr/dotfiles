@@ -265,6 +265,11 @@ bar {
 }
 
 ### Autostart applications
-exec ~/dotfiles/sway/autorun.sh
+exec ~/dotfiles/config/sway/autorun.sh
+# Systemd autostart target (https://github.com/swaywm/sway/wiki/Systemd-integration)
+exec 'systemctl --user import-environment; systemctl --user start sway-session.target'
+# sleep 1 is a hack that gives waybar time to bind to org.kde.StatusNotifierHost
+# eventually should be addressed with dbus activation
+exec 'sleep 1; dex-autostart --autostart -e sway'
 
 #include /etc/sway/config.d/*

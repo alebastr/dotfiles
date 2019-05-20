@@ -16,6 +16,3 @@ run gpg-connect-agent /bye
 run dunst
 # xembed tray -> SNI translation
 run xembedsniproxy
-
-# delay start until waybar is ready
-run 1 seafile-applet
