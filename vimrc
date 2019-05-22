@@ -284,6 +284,13 @@ nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
 nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
 
 "-------------------------------------------------------------------------------
+" Neoformat
+"-------------------------------------------------------------------------------
+let g:neoformat_enabled_javascript = ['prettier']
+let g:neoformat_enabled_typescript = ['prettier']
+nnoremap <silent> <A-S-F> :Neoformat<CR>
+
+"-------------------------------------------------------------------------------
 " YouCompleteMe
 "-------------------------------------------------------------------------------
 let g:ycm_auto_trigger = 0
