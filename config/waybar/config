@@ -60,8 +60,8 @@
     "backlight": {
         "format": "{percent}% {icon}",
         "format-icons": ["", ""],
-        "on-scroll-up": "brightnessctl set +1% >/dev/null",
-        "on-scroll-down": "brightnessctl set 1%- >/dev/null"
+        "on-scroll-up": "light -A 1 >/dev/null",
+        "on-scroll-down": "light -U 1 >/dev/null"
     },
     "battery": {
         "states": {
