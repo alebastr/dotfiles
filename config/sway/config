@@ -256,6 +256,13 @@ for_window [class="calibre"] move container to workspace 4
 for_window [class="Steam"] move container to workspace 6
 for_window [app_id="pinentry-qt"] floating enable
 
+for_window [app_id="waybar" floating] {
+    mark ContextMenu
+    move position cursor
+    move down 120px
+    focus
+}
+
 default_border none
 
 bar {
