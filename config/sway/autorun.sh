@@ -11,8 +11,6 @@ run() {
 
 # ssh-agent
 run gpg-connect-agent /bye
-# notifications
-#run mako
-run dunst
+
 # xembed tray -> SNI translation
 run xembedsniproxy

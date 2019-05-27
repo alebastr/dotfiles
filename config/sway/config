@@ -264,6 +264,7 @@ for_window [app_id="waybar" floating] {
 }
 
 default_border none
+hide_edge_borders --i3 both
 
 bar {
     swaybar_command waybar
