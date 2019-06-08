@@ -119,7 +119,7 @@ bindsym $mod+q reload
 bindsym $mod+Control+r reload
 
 # exit sway (logs you out of your Wayland session)
-bindsym $mod+Shift+q exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
+bindsym $mod+Shift+q exec "zenity --question --width=300 --text 'You pressed the exit shortcut.\nDo you really want to exit sway?' && swaymsg exit"
 
 #
 # Moving around:
@@ -255,13 +255,14 @@ for_window [class="Spotify"] move container to workspace 3
 for_window [class="calibre"] move container to workspace 4
 for_window [class="Steam"] move container to workspace 6
 for_window [app_id="pinentry-qt"] floating enable
+for_window [app_id="zenity"] floating enable
 
-for_window [app_id="waybar" floating] {
-    mark ContextMenu
-    move position cursor
-    move down 120px
-    focus
-}
+#for_window [app_id="waybar" floating] {
+#    mark ContextMenu
+#    move position cursor
+#    move down 120px
+#    focus
+#}
 
 default_border none
 hide_edge_borders --i3 both
