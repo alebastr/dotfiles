@@ -1,0 +1,16 @@
+{
+  "name": "waybar-position-popups",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "i3wm": "^1.1.0"
+  },
+  "installConfig": {
+      "pnp": true
+  },
+  "scripts": {
+      "start": "./index.js"
+  }
+}
