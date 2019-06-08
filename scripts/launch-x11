@@ -1,0 +1,20 @@
+#!/bin/sh
+# Because I don't want to remember these variables
+# Usage: ln -sf $SCRIPT ~/bin/$APPLICATION
+export QT_QPA_PLATFORM=xcb
+export GDK_BACKEND=x11
+export CALIBRE_USE_SYSTEM_THEME=1
+
+SELF=$(readlink -fn "$0"| xargs basename)
+CALLEE=$(basename "$0")
+if [ "$SELF" = "$CALLEE" ]; then
+    exec "$@";
+    exit;
+fi
+
+EXEC=$(command -pv $CALLEE)
+if [ -n "$EXEC" -a "$EXEC" != "$0" ]; then
+    exec "$EXEC" "$@"
+fi
+
+exit 1;
