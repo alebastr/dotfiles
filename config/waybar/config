@@ -11,6 +11,8 @@
         "tray",
         "backlight",
         "pulseaudio",
+        "cpu",
+        "memory",
         "network",
         "battery",
         "clock"
@@ -55,7 +57,16 @@
         "spacing": 5
     },
     "clock": {
-        "format": "{:%a, %d-%m-%Y %R}"
+        "format": "{:%a %b %d %R}",
+        "tooltip": false
+    },
+    "cpu": {
+        "format": "{usage}% ",
+        "interval": 5,
+        "tooltip": false
+    },
+    "memory": {
+        "format": "{}% "
     },
     "backlight": {
         "format": "{percent}% {icon}",
