@@ -13,4 +13,4 @@ run() {
 run gpg-connect-agent /bye
 
 # xembed tray -> SNI translation
-run xembedsniproxy
+run 1 xembedsniproxy
