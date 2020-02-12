@@ -16,7 +16,9 @@
         "memory",
         "network",
         "battery",
-        "clock"
+        "clock",
+        "clock#msk",
+        "clock#tsk"
     ],
     "sway/workspaces": {
         "disable-scroll": true,
@@ -61,6 +63,18 @@
         "format": "{:%a %b %d %R}",
         "tooltip": false
     },
+    "clock#tsk": {
+        "format": "{:%H}T",
+        "locale": "ru_RU.UTF-8",
+        "timezone": "Asia/Novosibirsk",
+        "tooltip-format": "<b>Томск</b>\n{:%a %d %b %R %z}\n\n{calendar}"
+    },
+    "clock#msk": {
+        "format": "{:%H}M",
+        "locale": "ru_RU.UTF-8",
+        "timezone": "Europe/Moscow",
+        "tooltip-format": "<b>Москва</b>\n{:%a %d %b %R %z}"
+    },
     "cpu": {
         "format": "{usage}% ",
         "interval": 5,
@@ -99,7 +113,9 @@
          "format-bluetooth": "{volume}% {icon}",
          "format-muted": "",
          "format-icons": {
+             "headphone": "",
              "headphones": "",
+             "hands-free": "",
              "handsfree": "",
              "headset": "",
              "phone": "",
