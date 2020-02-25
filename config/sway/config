@@ -250,6 +250,11 @@ mode "resize" {
 }
 bindsym $mod+r mode "resize"
 
+mode "passthrough" {
+	bindsym $mod+Pause mode default
+}
+bindsym $mod+Pause mode "passthrough"
+
 ### Window configs and defaults
 for_window [class="Chromium-browser"] mark Browser
 for_window [class="pavucontrol-qt"] floating enable
