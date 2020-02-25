@@ -251,9 +251,7 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 ### Window configs and defaults
-for_window [class="Firefox"] mark Browser
 for_window [class="Chromium-browser"] mark Browser
-
 for_window [class="pavucontrol-qt"] floating enable
 for_window [con_mark="Browser"] move container to workspace 2
 for_window [class="Spotify"] move container to workspace 3
@@ -263,13 +261,6 @@ for_window [app_id="pinentry-qt"] floating enable
 for_window [app_id="zenity"] floating enable
 # nested wlroots compositors
 assign [app_id="wlroots"] 9
-
-#for_window [app_id="waybar" floating] {
-#    mark ContextMenu
-#    move position cursor
-#    move down 120px
-#    focus
-#}
 
 default_border none
 hide_edge_borders --i3 both
