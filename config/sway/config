@@ -25,7 +25,7 @@ set $primary_output "eDP-1"
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg ~/Pictures/current-wallpaper.jpg fill
+output * bg $wallpaper fill
 
 output $primary_output {
     position 0 0
