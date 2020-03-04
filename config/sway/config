@@ -131,8 +131,9 @@ bindsym $mod+Shift+q exec "zenity --question --width=300 --text 'You pressed the
 #
 
 # apparently there's no replacement for prev/next window
-bindsym $mod+Tab focus left
-bindsym $mod+Shift+Tab focus right
+bindsym $mod+Tab focus next
+bindsym $mod+Shift+Tab focus prev
+bindsym $mod+Ctrl+Tab exec ~/dotfiles/scripts/window-switcher.sh
 
 bindsym $mod+j focus left
 bindsym $mod+k focus right
