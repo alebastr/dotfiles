@@ -67,7 +67,8 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ }
 
 " Completion
-Plug 'Shougo/deoplete.nvim', LoadIf(has_nvim_rpc, has('nvim') ? { 'do': ':UpdateRemotePlugins' } : {})
+" tag: 5.2 is the last compatible with python3-msgpack < 1.0.0
+Plug 'Shougo/deoplete.nvim', LoadIf(has_nvim_rpc, has('nvim') ? { 'do': ':UpdateRemotePlugins', 'tag': '5.2' } : {})
 "Plug 'Shougo/denite.nvim',   LoadIf(has_nvim_rpc, has('nvim') ? { 'do': ':UpdateRemotePlugins' } : {})
 "Plug 'Valloric/YouCompleteMe'
 
@@ -263,6 +264,8 @@ function! s:cmd(...)
 endfunction
 
 let g:LanguageClient_serverCommands = {
+    \ 'c': s:cmd('clangd', '--background-index', '--compile-commands-dir=build'),
+    \ 'cpp': s:cmd('clangd', '--background-index', '--compile-commands-dir=build'),
     \ 'rust': s:cmd('rustup', 'run', 'stable', 'rls'),
     \ 'javascript': s:cmd('javascript-typescript-stdio'),
     \ 'typescript': s:cmd('javascript-typescript-stdio'),
