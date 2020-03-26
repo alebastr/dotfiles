@@ -1,7 +1,7 @@
 * {
     border: none;
     border-radius: 0;
-    font-family: Liberation Mono, monospace;
+    font-family: Liberation Mono, 'Font Awesome 5 Free', 'Font Awesome 5 Brands', monospace;
     font-size: 15px;
     min-height: 0;
 }
@@ -23,7 +23,7 @@ window#waybar.empty {
     background-color: transparent;
 }
 
-window#waybar.calibre,
+window#waybar.calibre-gui,
 window#waybar.firefox {
     /* Arc-Dark theme background */
     background-color: rgba(56, 60, 74, 0.999);
