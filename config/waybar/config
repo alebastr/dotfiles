@@ -2,6 +2,7 @@
     "layer": "top",
     "modules-left": [
         "sway/workspaces",
+        "custom/layout",
         "sway/mode"
     ],
     "modules-center": [
@@ -35,6 +36,13 @@
             "focused": "",
             "default": ""
         }
+    },
+    "custom/layout": {
+        "format": "[{}]",
+        "return-type": "json",
+        "tooltip": true,
+        "escape": true,
+        "exec": "~/dotfiles/scripts/layout-indicator.py"
     },
     "custom/media": {
         "format": "{}",
