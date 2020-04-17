@@ -1,0 +1,11 @@
+[options]
+overlay = true
+upscaling_method = nearest_neighbour
+
+[binds]
+<Shift+asterisk> = zoom actual 
+<Ctrl+Left>  = pan  16   0
+<Ctrl+Up>    = pan   0  16
+<Ctrl+Down>  = pan   0 -16
+<Ctrl+Right> = pan -16   0
+
