@@ -1,3 +1,6 @@
+[Environment]
+QT_QPA_PLATFORM=wayland
+
 [Session Bus Policy]
 org.kde.StatusNotifierItem-2-1=own
 org.kde.StatusNotifierItem-2-2=own
