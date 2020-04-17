@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=PolicyKit Handler
+TryExec=/usr/libexec/lxqt-policykit-agent
+Exec=/usr/libexec/lxqt-policykit-agent
+OnlyShowIn=sway;
