@@ -84,15 +84,15 @@
         "tooltip-format": "<b>Москва</b>\n{:%a %d %b %R %z}"
     },
     "cpu": {
-        "format": "{usage}% ",
+        "format": "{usage:2}% ",
         "interval": 5,
         "tooltip": false
     },
     "memory": {
-        "format": "{}% "
+        "format": "{:2}% "
     },
     "backlight": {
-        "format": "{percent}% {icon}",
+        "format": "{percent:2}% {icon}",
         "format-icons": ["", ""],
         "on-scroll-up": "light -A 1 >/dev/null",
         "on-scroll-down": "light -U 1 >/dev/null"
@@ -103,7 +103,7 @@
             "warning": 30,
             "critical": 15
         },
-        "format": "{capacity}% {icon}",
+        "format": "{capacity:2}% {icon}",
         // "format-good": "", // An empty format will hide the module
         // "format-full": "",
         "format-icons": ["", "", "", "", ""]
@@ -117,8 +117,8 @@
         "tooltip-format-disconnected": "Disconnected ⚠"
     },
     "pulseaudio": {
-         "format": "{volume}% {icon}",
-         "format-bluetooth": "{volume}% {icon}",
+         "format": "{volume:2}% {icon}",
+         "format-bluetooth": "{volume:2}% {icon}",
          "format-muted": "",
          "format-icons": {
              "headphone": "",
