@@ -88,9 +88,10 @@ input "1267:8304:ELAN_Touchscreen" {
 #
 # Media keys
 #
-    bindsym XF86AudioRaiseVolume  exec pactl set-sink-volume 0 +3%
-    bindsym XF86AudioLowerVolume  exec pactl set-sink-volume 0 -3%
-    bindsym XF86AudioMute         exec pactl set-sink-mute 0 toggle
+    bindsym XF86AudioRaiseVolume  exec pactl set-sink-volume @DEFAULT_SINK@ +3%
+    bindsym XF86AudioLowerVolume  exec pactl set-sink-volume @DEFAULT_SINK@ -3%
+    bindsym XF86AudioMute         exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+    bindsym XF86AudioMicMute      exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
     bindsym XF86AudioNext         exec playerctl next
     bindsym XF86AudioPlay         exec playerctl play-pause
     bindsym XF86AudioPrev         exec playerctl previous
@@ -258,7 +259,7 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 mode "passthrough" {
-	bindsym $mod+Pause mode default
+    bindsym $mod+Pause mode default
 }
 bindsym $mod+Pause mode "passthrough"
 
