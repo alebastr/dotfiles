@@ -60,6 +60,7 @@ if [ -f "$ZPLUG_HOME/init.zsh" ]; then
     source "$ZPLUG_HOME/init.zsh"
 
     zplug "MichaelAquilina/zsh-you-should-use"
+    zplug "softmoth/zsh-vim-mode"
     zplug "zsh-users/zsh-completions"
 #    zplug "zsh-users/zsh-syntax-highlighting"
     zplug "zdharma/fast-syntax-highlighting"
