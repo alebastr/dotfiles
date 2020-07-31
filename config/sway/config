@@ -264,14 +264,14 @@ mode "passthrough" {
 bindsym $mod+Pause mode "passthrough"
 
 ### Window configs and defaults
-for_window [class="Chromium-browser"] mark Browser
 for_window [class="pavucontrol-qt"] floating enable
 for_window [app_id="pinentry-qt"] floating enable
 for_window [app_id="zenity"] floating enable
 assign [con_mark="Browser"] 2
+assign [con_mark="MailClient"] 3
 assign [app_id="calibre"] 4
 assign [class="calibre"] 4
-assign [class="Spotify"] 3
+assign [class="Spotify"] 7
 assign [class="Steam"] 6
 # nested wlroots compositors
 assign [app_id="wlroots"] 9
