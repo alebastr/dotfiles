@@ -82,6 +82,7 @@ Plug 'PProvost/vim-ps1'
 "Plug 'othree/xml.vim'
 Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
 Plug 'rust-lang/rust.vim'
+Plug '~/sources/meson/data/syntax-highlighting/vim'
 
 unlet has_async
 unlet has_nvim_rpc
@@ -160,7 +161,8 @@ function! InitGVim()
         set renderoptions=type:directx
         set guifont=Fira_Code:h11
     elseif has('nvim')
-        GuiFont Liberation Mono:h11
+        " GuiFont! Liberation Mono:h11
+        GuiFont! Fira Code:h11
         " Show text tabline and popups in nvim-qt
         GuiTabline 0
         GuiPopupmenu 0
@@ -263,10 +265,15 @@ function! s:cmd(...)
     endif
 endfunction
 
+let rust_langserver='rls'
+if executable('rust-analyzer')
+    let rust_langserver='rust-analyzer'
+endif
+
 let g:LanguageClient_serverCommands = {
     \ 'c': s:cmd('clangd', '--background-index', '--compile-commands-dir=build'),
     \ 'cpp': s:cmd('clangd', '--background-index', '--compile-commands-dir=build'),
-    \ 'rust': s:cmd('rustup', 'run', 'stable', 'rls'),
+    \ 'rust': s:cmd(rust_langserver),
     \ 'javascript': s:cmd('javascript-typescript-stdio'),
     \ 'typescript': s:cmd('javascript-typescript-stdio'),
     \ 'typescript.tsx': s:cmd('javascript-typescript-stdio')
@@ -326,7 +333,7 @@ let g:clang_complete_auto = 0
 " deoplete
 "-------------------------------------------------------------------------------
 let g:deoplete#enable_at_startup = 1
-let g:python3_host_prog = 'python'
+let g:python3_host_prog = '/usr/bin/python3'
 
 "-------------------------------------------------------------------------------
 " netrw
