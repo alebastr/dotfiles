@@ -18,7 +18,7 @@ swaymsg -t get_tree | jq -r '
 		# remove markup and index from workspace name, replace scratch with "[S]"
 		+ (.w | gsub("^[^:]*:|<[^>]*>"; "") | sub("__i3_scratch"; "[S]"))
 		+ "\t " +  .name)
-	' | wofi --show dmenu --prompt='Focus a window' | {
+	' | rofi -dmenu | {
 		read -r id name
 		swaymsg "[con_id=$id]" focus
 	}
