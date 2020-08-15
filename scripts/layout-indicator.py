@@ -20,7 +20,10 @@ def write(text, tooltip=""):
 
 def on_event(self, _):
     global last
-    layout = i3.get_tree().find_focused().parent.layout
+    focused = i3.get_tree().find_focused()
+    if focused is None or focused.parent is None:
+        return
+    layout = focused.parent.layout
     if layout != last:
         write(short.get(layout, " "), layout)
     last = layout
