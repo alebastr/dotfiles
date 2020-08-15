@@ -50,6 +50,15 @@ if [ -n "$SSH_CONNECTION" -a -z "$TMUX" ] && command -v tmux >/dev/null; then
     tmux new -A -s default
 fi
 
+# define function for refreshing environment from tmux
+if [ -n "$TMUX" ]; then
+    function refresh-environment {
+        export $(tmux show-environment | grep -v "^-")
+    }
+else
+    function refresh-environment {}
+fi
+
 ## load plugins
 export ZPLUG_HOME=~/.zplug
 
