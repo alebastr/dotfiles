@@ -1,7 +1,7 @@
 {
-    "layer": "top",
     "modules-left": [
         "sway/workspaces",
+//        "wlr/taskbar",
         "custom/layout",
         "sway/mode"
     ],
@@ -15,7 +15,6 @@
         "pulseaudio",
         "cpu",
         "memory",
-        "network",
         "battery",
         "clock",
         "clock#msk",
@@ -37,6 +36,11 @@
             "focused": "",
             "default": ""
         }
+    },
+    "wlr/taskbar": {
+        // "all-outputs": true,
+        "on-click": "activate",
+        "tooltip": "[{short_state}] {title}"
     },
     "custom/layout": {
         "format": "[{}]",
