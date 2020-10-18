@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Udiskie
+Comment=Automounter for removable media
+Icon=drive-removable-media
+Exec=udiskie --appindicator
+Terminal=false
+Type=Application
+NoDisplay=true
+NotShowIn=KDE;GNOME;

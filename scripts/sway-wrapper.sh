@@ -7,6 +7,9 @@ export QT_QPA_PLATFORMTHEME=qt5ct
 # required for xdg-desktop-portal backend selection
 export XDG_CURRENT_DESKTOP=sway
 export XDG_SESSION_TYPE=wayland
+# bug?
+export SHELL=/bin/zsh
+
 # redirect errors to a file in user's home directory if we can
 errfile="$HOME/.xsession-errors"
 if ( umask 077 && cp /dev/null "$errfile" 2> /dev/null ); then
@@ -20,9 +23,6 @@ else
     fi
 fi
 
-/usr/bin/systemctl --user start graphical-session-pre.target
-#/usr/bin/env
-#/usr/bin/loginctl session-status
 /usr/bin/sway
 # stop systemd user services
 /usr/bin/systemctl --user stop graphical-session.target graphical-session-pre.target

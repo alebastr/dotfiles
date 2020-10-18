@@ -1,0 +1,12 @@
+[Unit]
+Description=Geoclue Demo agent
+Documentation=man:geoclue(5)
+PartOf=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/libexec/geoclue-2.0/demos/agent
+Restart=on-failure
+
+[Install]
+WantedBy=graphical-session.target
