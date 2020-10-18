@@ -1,6 +1,9 @@
-rofi.font: Liberation Mono 12
-rofi.modi: run,drun
-rofi.run-command: swaymsg exec "{cmd}"
-rofi.show-icons: true
-rofi.terminal: alacritty
-rofi.theme: /usr/share/rofi/themes/android_notification.rasi
+configuration {
+	font: "Liberation Mono 12";
+	modi: "run,drun,combi";
+	combi-modi: "run,drun";
+	run-command: "swaymsg exec "{cmd}"";
+	show-icons: true;
+	terminal: "alacritty";
+	theme: "android_notification";
+}
