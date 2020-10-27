@@ -7,8 +7,6 @@ export QT_QPA_PLATFORMTHEME=qt5ct
 # required for xdg-desktop-portal backend selection
 export XDG_CURRENT_DESKTOP=sway
 export XDG_SESSION_TYPE=wayland
-# bug?
-export SHELL=/bin/zsh
 
 # redirect errors to a file in user's home directory if we can
 errfile="$HOME/.xsession-errors"
