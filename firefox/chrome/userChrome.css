@@ -1,0 +1,30 @@
+/* Auto-hide sidebar in windows with only one tab */
+#main-window[titlepreface^="[1] "] #sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] {
+  visibility: collapse !important;
+}
+/* Hide main tabs toolbar */
+#main-window[tabsintitlebar="true"]:not([extradragspace="true"]) #TabsToolbar > .toolbar-items {
+    opacity: 0;
+    pointer-events: none;
+}
+#main-window:not([tabsintitlebar="true"]) #TabsToolbar {
+    visibility: collapse !important;
+}
+/* Sidebar min and max width removal */
+#sidebar {
+    max-width: none !important;
+    min-width: 0px !important;
+}
+/* Hide splitter, when using Tree Style Tab. */
+#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] + #sidebar-splitter {
+    display: none !important;
+}
+/* Hide sidebar header, when using Tree Style Tab. */
+#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] #sidebar-header {
+    visibility: collapse;
+}
+/* Auto-hide sidebar when fullscreen */
+#main-window[inFullscreen] #sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] {
+  display: none !important;
+  width: 0px !important;
+}
