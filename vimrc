@@ -1,8 +1,8 @@
 set nocompatible
 
 function! LoadIf(cond, ...)
-    let opts = get(a:000, 0, {})
-    return a:cond ? opts : extend(opts, {'on': [], 'for': [] })
+    let l:opts = get(a:000, 0, {})
+    return a:cond ? l:opts : extend(l:opts, {'on': [], 'for': [] })
 endfunction
 
 call plug#begin(has('win32') ? '~/vimfiles/bundle' : '~/.vim/bundle')
@@ -67,8 +67,13 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ }
 
 " Completion
+let deoplete_opts = has('nvim') ? { 'do': ':UpdateRemotePlugins' } : {}
 " tag: 5.2 is the last compatible with python3-msgpack < 1.0.0
-Plug 'Shougo/deoplete.nvim', LoadIf(has_nvim_rpc, has('nvim') ? { 'do': ':UpdateRemotePlugins', 'tag': '5.2' } : {})
+if py3eval('__import__("msgpack").version[0]') < 1
+    let deoplete_opts = extend(deoplete_opts, { 'tag': '5.2' })
+endif
+Plug 'Shougo/deoplete.nvim', LoadIf(has_nvim_rpc, deoplete_opts)
+unlet deoplete_opts
 "Plug 'Shougo/denite.nvim',   LoadIf(has_nvim_rpc, has('nvim') ? { 'do': ':UpdateRemotePlugins' } : {})
 "Plug 'Valloric/YouCompleteMe'
 
