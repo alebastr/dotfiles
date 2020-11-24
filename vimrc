@@ -48,7 +48,7 @@ Plug 'SirVer/ultisnips', LoadIf(has('python3'))
 Plug 'honza/vim-snippets'
 Plug 'mattn/emmet-vim'
 Plug 'vim-syntastic/syntastic', LoadIf(!has_async)
-Plug 'w0rp/ale', LoadIf(has_async)
+Plug 'dense-analysis/ale', LoadIf(has_async)
 Plug 'sbdchd/neoformat'
 
 " Required to run tsuquyomi with vim7/neovim
@@ -87,7 +87,7 @@ Plug 'PProvost/vim-ps1'
 "Plug 'othree/xml.vim'
 Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
 Plug 'rust-lang/rust.vim'
-Plug '~/sources/meson/data/syntax-highlighting/vim'
+Plug '~/sources/mesonbuild/meson/data/syntax-highlighting/vim'
 
 unlet has_async
 unlet has_nvim_rpc
@@ -109,7 +109,7 @@ set tabstop=4
 set shiftwidth=4    " 4 characters for indenting
 set expandtab
 set number          " line numbers
-set cindent
+" set cindent
 set autoindent
 set foldmethod=syntax
 set foldlevel=8
@@ -262,6 +262,13 @@ let g:lisp_rainbow = 1
 "-------------------------------------------------------------------------------
 " Language servers and plugins
 "-------------------------------------------------------------------------------
+let g:ale_disable_lsp = 1
+let g:ale_pattern_options_enabled = 1
+let g:ale_pattern_options = {
+    \ '\.\(c\|cpp\|h\|hpp\)$': {'ale_enabled': 0, 'ale_linters': [], 'ale_fixers': []},
+    \ '\.rs$': {'ale_enabled': 0, 'ale_linters': [], 'ale_fixers': []}
+    \ }
+
 function! s:cmd(...)
     if has('win32')
         return ['cmd', '/C'] + a:000
