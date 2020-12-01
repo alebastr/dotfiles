@@ -5,5 +5,5 @@ configuration {
 	run-command: "swaymsg exec "{cmd}"";
 	show-icons: true;
 	terminal: "alacritty";
-	theme: "android_notification";
+	theme: "Arc-Dark";
 }

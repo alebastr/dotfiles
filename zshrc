@@ -59,6 +59,10 @@ else
     function refresh-environment {}
 fi
 
+if command -v most >/dev/null; then
+    export PAGER=most
+fi
+
 ## load plugins
 export ZPLUG_HOME=~/.zplug
 

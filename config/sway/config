@@ -131,7 +131,7 @@ input "1267:8304:ELAN_Touchscreen" {
     bindsym $mod+Control+r reload
 
     # Exit sway (logs you out of your Wayland session)
-    bindsym $mod+Shift+q exec "zenity --question --width=300 --text 'You pressed the exit shortcut.\nDo you really want to exit sway?' && swaymsg exit"
+    bindsym $mod+Shift+q exec nwgbar
 #
 # Moving around:
 #
@@ -223,7 +223,7 @@ input "1267:8304:ELAN_Touchscreen" {
     bindsym $mod+t floating toggle
 
     # Swap focus between the tiling area and the floating area
-    bindsym $mod+Shift+space focus mode_toggle
+    bindsym $mod+Shift+t focus mode_toggle
 
     # Move focus to the parent container
     bindsym $mod+a focus parent
