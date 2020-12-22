@@ -2,7 +2,12 @@
 if command -v tmux >/dev/null; then
     # start tmux in tmux-UUID.slice
     if command -v systemd-run >/dev/null; then
-        alias tmux='_(){ local UUID=`uuidgen | sed s/\-//g`; systemd-run --quiet --same-dir --user --scope --slice tmux-$UUID --unit tmux-$UUID "$@"; } && _ tmux'
+        function tmux {
+            local UUID=`uuidgen | sed s/\-//g`;
+            systemd-run --quiet --same-dir --user --scope \
+                --slice tmux-$UUID --unit tmux-$UUID      \
+                tmux "$@";
+        }
     fi
     # connect to tmux default session in remote shells
     if [[ -n "$SSH_CONNECTION" && -z "$TMUX" ]]; then
