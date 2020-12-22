@@ -45,22 +45,14 @@ bindkey -v
 ## do not use Ctrl-S and Ctrl-Q for flow control
 stty -ixon -ixoff
 
-# connect to tmux default session in remote shells
-if [ -n "$SSH_CONNECTION" -a -z "$TMUX" ] && command -v tmux >/dev/null; then
-    tmux new -A -s default
-fi
-
-# define function for refreshing environment from tmux
-if [ -n "$TMUX" ]; then
-    function refresh-environment {
-        export $(tmux show-environment | grep -v "^-")
-    }
-else
-    function refresh-environment {}
-fi
+# tmux-specific aliases and helpers
+test -f ~/dotfiles/tmux.sh && source ~/dotfiles/tmux.sh
 
 if command -v most >/dev/null; then
     export PAGER=most
+    if command -v bat >/dev/null; then
+        alias bat="env PAGER=less bat"
+    fi
 fi
 
 ## load plugins

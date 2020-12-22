@@ -22,7 +22,6 @@ export XDG_SESSION_TYPE=wayland
 #    fi
 #fi
 
-/bin/systemd-cat -t $XDG_SESSION_DESKTOP \
-    "/usr/bin/$(basename "$0")" "$@"
+/bin/systemd-cat "/usr/bin/$(basename "$0")" "$@"
 # stop systemd user services
 /usr/bin/systemctl --user stop graphical-session.target graphical-session-pre.target
