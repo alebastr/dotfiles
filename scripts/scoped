@@ -1,0 +1,8 @@
+#!/bin/sh
+APP_ID=$(uuidgen | sed s/-//g);
+APP_NAME=$(basename "$1")
+exec systemd-run \
+    --quiet --same-dir --user --scope \
+    --slice "app-$APP_NAME"           \
+    --unit  "app-$APP_NAME-$APP_ID"   \
+    "$@"
