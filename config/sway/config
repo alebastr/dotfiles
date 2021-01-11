@@ -88,50 +88,53 @@ input "1267:8304:ELAN_Touchscreen" {
 #
 # Media keys
 #
-    bindsym XF86AudioRaiseVolume  exec pactl set-sink-volume @DEFAULT_SINK@ +3%
-    bindsym XF86AudioLowerVolume  exec pactl set-sink-volume @DEFAULT_SINK@ -3%
-    bindsym XF86AudioMute         exec pactl set-sink-mute @DEFAULT_SINK@ toggle
-    bindsym XF86AudioMicMute      exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
-    bindsym XF86AudioNext         exec playerctl next
-    bindsym XF86AudioPlay         exec playerctl play-pause
-    bindsym XF86AudioPrev         exec playerctl previous
-    bindsym XF86MonBrightnessDown exec light -U 5
-    bindsym XF86MonBrightnessUp   exec light -A 5
-
+bindsym --locked {
+    XF86AudioRaiseVolume  exec pactl set-sink-volume @DEFAULT_SINK@ +3%
+    XF86AudioLowerVolume  exec pactl set-sink-volume @DEFAULT_SINK@ -3%
+    XF86AudioMute         exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+    XF86AudioMicMute      exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
+    XF86AudioNext         exec playerctl next
+    XF86AudioPlay         exec playerctl play-pause
+    XF86AudioPrev         exec playerctl previous
+    XF86MonBrightnessDown exec light -U 5
+    XF86MonBrightnessUp   exec light -A 5
+}
 #
 # Basics:
 #
+set $screenshot_pattern "$(xdg-user-dir PICTURES)/Screenshots/$(date +'%F-%T_grim.png')"
+# Drag floating windows by holding down $mod and left mouse button.
+# Resize them with right mouse button + $mod.
+# Despite the name, also works for non-floating windows.
+# Change normal to inverse to use left mouse button for resizing and right
+# mouse button for dragging.
+floating_modifier $mod normal
+
+bindsym --to-code {
     # Start a terminal
-    bindsym $mod+Return exec $term
+    $mod+Return exec $term
 
     # Kill focused window
-    bindsym $mod+Shift+c kill
+    $mod+Shift+c kill
 
     # Start your launcher
-    bindsym $mod+p       exec $menu
-    bindsym $mod+Shift+p exec $alt_menu
+    $mod+p       exec $menu
+    $mod+Shift+p exec $alt_menu
 
     # Lock screen
-    bindsym $mod+l exec $lock
+    $mod+l exec $lock
 
     # Take a screenshot
-    set $screenshot_pattern "$(xdg-user-dir PICTURES)/Screenshots/$(date +'%F-%T_grim.png')"
-    bindsym Print      exec "grim -o $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name') \"$screenshot_pattern\""
-    bindsym Alt+Print  exec "grim -g \"$(slurp)\" \"$screenshot_pattern\""
-
-    # Drag floating windows by holding down $mod and left mouse button.
-    # Resize them with right mouse button + $mod.
-    # Despite the name, also works for non-floating windows.
-    # Change normal to inverse to use left mouse button for resizing and right
-    # mouse button for dragging.
-    floating_modifier $mod normal
+    Print      exec "grim -o $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name') \"$screenshot_pattern\""
+    Alt+Print  exec "grim -g \"$(slurp)\" \"$screenshot_pattern\""
 
     # Reload the configuration file
-    bindsym $mod+q reload
-    bindsym $mod+Control+r reload
+    $mod+q reload
+    $mod+Control+r reload
 
     # Exit sway (logs you out of your Wayland session)
-    bindsym $mod+Shift+q exec nwgbar
+    $mod+Shift+q exec nwgbar
+}
 #
 # Moving around:
 #
@@ -163,38 +166,41 @@ input "1267:8304:ELAN_Touchscreen" {
 #
 # Workspaces:
 #
+bindsym {
     # Switch to workspace
-    bindsym $mod+1 workspace 1
-    bindsym $mod+2 workspace 2
-    bindsym $mod+3 workspace 3
-    bindsym $mod+4 workspace 4
-    bindsym $mod+5 workspace 5
-    bindsym $mod+6 workspace 6
-    bindsym $mod+7 workspace 7
-    bindsym $mod+8 workspace 8
-    bindsym $mod+9 workspace 9
-    bindsym $mod+0 workspace 10
+    $mod+1 workspace 1
+    $mod+2 workspace 2
+    $mod+3 workspace 3
+    $mod+4 workspace 4
+    $mod+5 workspace 5
+    $mod+6 workspace 6
+    $mod+7 workspace 7
+    $mod+8 workspace 8
+    $mod+9 workspace 9
+    $mod+0 workspace 10
     # Move focused container to workspace
-    bindsym $mod+Shift+1 move container to workspace 1
-    bindsym $mod+Shift+2 move container to workspace 2
-    bindsym $mod+Shift+3 move container to workspace 3
-    bindsym $mod+Shift+4 move container to workspace 4
-    bindsym $mod+Shift+5 move container to workspace 5
-    bindsym $mod+Shift+6 move container to workspace 6
-    bindsym $mod+Shift+7 move container to workspace 7
-    bindsym $mod+Shift+8 move container to workspace 8
-    bindsym $mod+Shift+9 move container to workspace 9
-    bindsym $mod+Shift+0 move container to workspace 10
+    $mod+Shift+1 move container to workspace 1
+    $mod+Shift+2 move container to workspace 2
+    $mod+Shift+3 move container to workspace 3
+    $mod+Shift+4 move container to workspace 4
+    $mod+Shift+5 move container to workspace 5
+    $mod+Shift+6 move container to workspace 6
+    $mod+Shift+7 move container to workspace 7
+    $mod+Shift+8 move container to workspace 8
+    $mod+Shift+9 move container to workspace 9
+    $mod+Shift+0 move container to workspace 10
     # Note: workspaces can have any name you want, not just numbers.
     # We just use 1-10 as the default.
+}
 #
 # Layout stuff:
 #
+bindsym --to-code {
     # You can "split" the current object of your focus with
     # $mod+b or $mod+v, for horizontal and vertical splits
     # respectively.
-    bindsym $mod+b splith
-    bindsym $mod+v splitv
+    $mod+b splith
+    $mod+v splitv
 
     # Switch the current container between different layout styles
     # bindsym $mod+s layout stacking
@@ -202,31 +208,32 @@ input "1267:8304:ELAN_Touchscreen" {
     # bindsym $mod+e layout toggle split
 
     # Focus next screen.
-    bindsym $mod+e focus output right
+    $mod+e focus output right
 
     # Focus previous screen.
-    bindsym $mod+w focus output left
+    $mod+w focus output left
 
     # Move workspace to next screen
-    bindsym $mod+Shift+e move workspace to output right
+    $mod+Shift+e move workspace to output right
 
     # Move workspace to previous screen
-    bindsym $mod+Shift+w move workspace to output left
+    $mod+Shift+w move workspace to output left
 
     # Switch to next layout.
-    bindsym $mod+space layout toggle splith splitv tabbed stacking
+    $mod+space layout toggle splith splitv tabbed stacking
 
     # Make the current focus fullscreen
-    bindsym $mod+f fullscreen
+    $mod+f fullscreen
 
     # Toggle the current focus between tiling and floating mode
-    bindsym $mod+t floating toggle
+    $mod+t floating toggle
 
     # Swap focus between the tiling area and the floating area
-    bindsym $mod+Shift+t focus mode_toggle
+    $mod+Shift+t focus mode_toggle
 
     # Move focus to the parent container
-    bindsym $mod+a focus parent
+    $mod+a focus parent
+}
 #
 # Scratchpad:
 #
@@ -256,7 +263,7 @@ mode "resize" {
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
-bindsym $mod+r mode "resize"
+bindsym --to-code $mod+r mode "resize"
 
 mode "passthrough" {
     bindsym $mod+Pause mode default
