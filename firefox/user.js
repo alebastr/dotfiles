@@ -4,6 +4,10 @@ user_pref("browser.aboutConfig.showWarning", false);
 user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
 /* Sync server */
 user_pref("identity.sync.tokenserver.uri", "https://fxsync.app.alebastr.su/token/1.0/sync/1.5");
+/* This button is annoying. */
+user_pref("media.videocontrols.picture-in-picture.video-toggle.enabled", false);
+/* speech-dispatcher */
+user_pref("media.webspeech.synth.enabled", false);
 
 user_pref("widget.allow-client-side-decoration", true);
 /* Allow system theme colors in tree-style-tab */
