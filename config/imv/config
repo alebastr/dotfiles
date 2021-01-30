@@ -8,4 +8,6 @@ upscaling_method = nearest_neighbour
 <Ctrl+Up>    = pan   0  16
 <Ctrl+Down>  = pan   0 -16
 <Ctrl+Right> = pan -16   0
+<y>          = exec wl-copy <"$imv_current_file"
+<Shift+Delete> = exec trash "$imv_current_file"
 
