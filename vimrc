@@ -30,7 +30,7 @@ Plug 'jlanzarotta/bufexplorer'
 
 " Behavior/General
 Plug 'easymotion/vim-easymotion'
-Plug 'ervandew/supertab'
+"Plug 'ervandew/supertab'
 Plug 'jiangmiao/auto-pairs'
 Plug 'sjl/gundo.vim'
 Plug 'tomtom/tcomment_vim' " gc{motion}, gc<count>c{motion}, gcc
@@ -129,6 +129,8 @@ set confirm
 set laststatus=2
 " airline already displays mode
 set noshowmode
+set nofixeol
+set updatetime=300
 
 "-------------------------------------------------------------------------------
 " Look and Theme settings
@@ -285,6 +287,7 @@ endif
 let g:LanguageClient_serverCommands = {
     \ 'c': s:cmd('clangd', '--background-index', '--compile-commands-dir=build'),
     \ 'cpp': s:cmd('clangd', '--background-index', '--compile-commands-dir=build'),
+    \ 'python': s:cmd('pyls'),
     \ 'rust': s:cmd(rust_langserver),
     \ 'javascript': s:cmd('javascript-typescript-stdio'),
     \ 'typescript': s:cmd('javascript-typescript-stdio'),
@@ -294,7 +297,8 @@ let g:LanguageClient_serverCommands = {
 let g:LanguageClient_rootMarkers = {
     \ 'javascript.jsx': ['package.json'],
     \ 'typescript': ['tsconfig.json', 'package.json'],
-    \ 'typescript.tsx': ['tsconfig.json', 'package.json']
+    \ 'typescript.tsx': ['tsconfig.json', 'package.json'],
+    \ 'python': ['pyproject.toml', 'setup.cfg', 'setup.py', 'tox.ini']
     \ }
 
 " Automatically start language servers.
