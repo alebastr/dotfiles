@@ -3,9 +3,12 @@
 ## Autostart
 ```
 % cat ~/.config/sway/config.d/99-dex-autostart.conf
-# sleep 1 is a hack that gives waybar time to bind to org.kde.StatusNotifierHost
+# sleep 2 is a hack that gives waybar time to bind to org.kde.StatusNotifierHost
 # eventually should be addressed with dbus activation
-exec 'sleep 1; dex-autostart --autostart --environment sway'
+exec 'sleep 2; systemctl --user start xdg-desktop-autostart.target'
+% cat ~/.config/systemd/user/xdg-desktop-autostart.target.d/override.conf
+[Unit]
+RefuseManualStart=no
 ```
 
 ## PolicyKit integration
@@ -36,11 +39,14 @@ OnlyShowIn=sway;
 * `export XDG_CURRENT_DESKTOP=sway`  before starting sway. Generally it's enough to add the line with variable into `~/.bash_profile`, `~/.zprofile` , `~/.profile` , or whatever else works for your login shell.
 * Update dbus and systemd environment variables:
   ```sh
-  % cat /etc/sway/config.d/90-systemd-dbus-environment.conf
-  # update dbus and systemd user session with envronment variables from sway
-  exec command -v dbus-update-activation-environment >/dev/null && \
-      dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP
-  exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP
+  % cat /etc/sway/config.d/10-systemd.conf
+  # Import minimal required environment for dbus and systemd user services
+  # Set XDG_CURRENT_DESKTOP to "sway" for xdg-desktop-portal service
+  exec hash dbus-update-activation-environment 2>/dev/null && \
+       dbus-update-activation-environment --systemd DISPLAY SWAYSOCK WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+  exec export XDG_CURRENT_DESKTOP=sway && \
+       systemctl --user import-environment DISPLAY SWAYSOCK WAYLAND_DISPLAY XDG_CURRENT_DESKTOP && \
+       systemctl --user start sway-session.target
   ```
 ### Zoom, electron, etc...
 <https://gitlab.com/jamedjo/gnome-dbus-emulation-wlr/> (not tested)
@@ -51,7 +57,7 @@ OnlyShowIn=sway;
 
 **Browser**: Firefox + Tridactyl
 
-**Terminal**: [alacritty](https://github.com/alacritty/alacritty)
+**Terminal**: [alacritty](https://github.com/alacritty/alacritty) or [foot](https://codeberg.org/dnkl/foot)
 
 **Launcher**: [rofi-wayland](https://github.com/lbonn/rofi)
 
