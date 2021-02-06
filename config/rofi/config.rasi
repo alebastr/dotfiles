@@ -2,7 +2,7 @@ configuration {
 	font: "Liberation Mono 12";
 	modi: "run,drun,combi";
 	combi-modi: "run,drun";
-	run-command: "swaymsg exec scoped "{cmd}"";
+	run-command: "swaymsg exec "{cmd}"";
 	show-icons: true;
 	terminal: "alacritty";
 	theme: "Arc-Dark";
