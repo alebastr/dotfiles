@@ -50,6 +50,7 @@ Plug 'mattn/emmet-vim'
 Plug 'vim-syntastic/syntastic', LoadIf(!has_async)
 Plug 'dense-analysis/ale', LoadIf(has_async)
 Plug 'sbdchd/neoformat'
+Plug 'editorconfig/editorconfig-vim'
 
 " Required to run tsuquyomi with vim7/neovim
 "Plug 'Shougo/vimproc.vim'
@@ -315,6 +316,12 @@ nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
 let g:neoformat_enabled_javascript = ['prettier']
 let g:neoformat_enabled_typescript = ['prettier']
 nnoremap <silent> <A-S-F> :Neoformat<CR>
+
+"-------------------------------------------------------------------------------
+" EditorConfig
+"-------------------------------------------------------------------------------
+
+let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 
 "-------------------------------------------------------------------------------
 " YouCompleteMe
