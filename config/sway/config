@@ -96,8 +96,8 @@ bindsym --locked {
     XF86AudioNext         exec playerctl next
     XF86AudioPlay         exec playerctl play-pause
     XF86AudioPrev         exec playerctl previous
-    XF86MonBrightnessDown exec light -U 5
-    XF86MonBrightnessUp   exec light -A 5
+    XF86MonBrightnessDown exec light -U 5 && notify-send -h int:value:$(light) -t 800 light
+    XF86MonBrightnessUp   exec light -A 5 && notify-send -h int:value:$(light) -t 800 light
 }
 #
 # Basics:
