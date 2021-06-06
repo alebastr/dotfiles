@@ -73,15 +73,6 @@ input type:keyboard {
     xkb_options grp:shifts_toggle
 }
 
-input "2:7:SynPS/2_Synaptics_TouchPad" {
-    natural_scroll enabled
-    tap enabled
-}
-
-input "1267:8304:ELAN_Touchscreen" {
-    map_to_output eDP-1
-}
-
 ### Key bindings
 # Horrible mix of awesome, xmonad and i3 bindings
 
