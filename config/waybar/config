@@ -1,5 +1,6 @@
 {
     "modules-left": [
+        "custom/start",
         "sway/workspaces",
 //        "wlr/taskbar",
         "custom/layout",
@@ -15,9 +16,10 @@
         "cpu",
         "memory",
         "battery",
-        "clock",
+        "custom/platform_profile",
         "clock#msk",
-        "clock#tsk"
+        "clock#tsk",
+        "clock"
     ],
     "sway/workspaces": {
         "disable-scroll": true,
@@ -48,6 +50,18 @@
         "escape": true,
         "exec": "~/dotfiles/scripts/layout-indicator.py"
     },
+    "custom/platform_profile": {
+        "format": "{}",
+        "return-type": "json",
+        "tooltip": true,
+        "escape": true,
+        "exec": "~/dotfiles/scripts/waybar-platform-profile.ers"
+    },
+    "custom/start": {
+        "format": "",
+        "tooltip-format": "Click here to begin",
+        "on-click": "nwggrid"
+    },
     "custom/media": {
         "format": "{}",
         "return-type": "json",
@@ -73,13 +87,14 @@
     },
     "clock": {
         "format": "{:%a %b %d %R}",
-        "tooltip": false
+        "format-alt": "{:%R}",
+        "tooltip-format": "<b>Sunnyvale</b>\n{:%a %d %b %R %z}\n\n{calendar}"
     },
     "clock#tsk": {
         "format": "{:%H}T",
         "locale": "ru_RU.UTF-8",
         "timezone": "Asia/Novosibirsk",
-        "tooltip-format": "<b>Томск</b>\n{:%a %d %b %R %z}\n\n{calendar}"
+        "tooltip-format": "<b>Томск</b>\n{:%a %d %b %R %z}"
     },
     "clock#msk": {
         "format": "{:%H}M",

@@ -23,10 +23,18 @@ window#waybar.empty {
     background-color: transparent;
 }
 
-window#waybar.calibre-gui,
+window#waybar.calibre-gui {
+    background-color: #2d2d2d;
+}
+
 window#waybar.firefox {
-    /* Arc-Dark theme background */
-    background-color: rgba(56, 60, 74, 0.999);
+    /* Arc-Dark theme */
+    background-color: #565965;
+}
+
+window#waybar.thunderbird {
+    /* Arc-Dark theme */
+    background-color: #2f343f;
 }
 
 /* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
@@ -34,18 +42,19 @@ window#waybar.firefox {
     padding: 0 8px;
     background-color: transparent;
     color: white;
-    border-bottom: 2px solid transparent;
+    /* Use box-shadow instead of border so the text isn't offset */
+    box-shadow: inset 0 -2px transparent;
 }
 
 /* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
 #workspaces button:hover {
     background: rgba(0, 0, 0, 0.2);
-    box-shadow: inherit;
-    border-bottom: 2px solid #ffffff;
+    box-shadow: inset 0 -2px white;
 }
+
 #workspaces button.focused {
-    background-color: #64727D;
-    border-bottom: 2px solid white;
+    background: rgba(100, 114, 125, 0.7);
+    box-shadow: inset 0 -2px white;
 }
 
 #workspaces button.urgent {
@@ -54,13 +63,14 @@ window#waybar.firefox {
 
 #mode {
     background-color: red;
-    border-bottom: 2px solid white;
+    box-shadow: inset 0 -2px white;
 }
 
 #clock,
 #battery,
 #cpu,
 #memory,
+#disk,
 #temperature,
 #backlight,
 #network,
@@ -69,11 +79,35 @@ window#waybar.firefox {
 #custom-layout,
 #tray,
 #mode,
-#idle_inhibitor {
+#idle_inhibitor,
+#mpd {
+    padding: 4px;
+    margin: 0 4px;
+}
+
+#custom-start {
     padding: 4px 8px;
 }
 
-#battery.charging {
+#custom-platform_profile {
+    padding: 4px;
+}
+#window,
+#workspaces {
+    margin: 0 4px;
+}
+
+/* If workspaces is the leftmost module, omit left margin */
+.modules-left > widget:first-child > #workspaces {
+    margin-left: 0;
+}
+
+/* If workspaces is the rightmost module, omit right margin */
+.modules-right > widget:last-child > #workspaces {
+    margin-right: 0;
+}
+
+#battery.charging, #battery.plugged {
     background-color: rgba(38, 166, 91, 0.2);
 }
 

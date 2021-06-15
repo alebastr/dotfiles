@@ -1,0 +1,71 @@
+#!/usr/bin/rust-script
+// cargo-deps: inotify, lazy_static
+// vim: ft=rust
+use inotify::{EventMask, Inotify, WatchMask};
+use lazy_static::lazy_static;
+use std::collections::HashMap;
+use std::fs::File;
+use std::io::prelude::*;
+use std::io::{self, Write};
+use std::path::Path;
+
+const PLATFORM_PROFILE_PATH: &str = "/sys/firmware/acpi/platform_profile";
+lazy_static! {
+    static ref PLATFORM_PROFILE_ICONS: HashMap<&'static str, &'static str> = {
+        let mut icons = HashMap::new();
+        icons.insert("low-power", "");
+        icons.insert("balanced", "");
+        icons.insert("performance", "");
+        icons
+    };
+}
+
+fn get_current_profile(path: &Path) -> std::io::Result<String> {
+    let mut file = File::open(path)?;
+    let mut data = String::new();
+    file.read_to_string(&mut data)?;
+    Ok(data)
+}
+
+fn send_custom_script_data(profile: &str) -> std::io::Result<()> {
+    let icon = PLATFORM_PROFILE_ICONS.get(profile).unwrap_or(&"?");
+    let stdout = io::stdout();
+    let mut handle = stdout.lock();
+    write!(
+        handle,
+        "{{ \"text\": \"{}\", \"tooltip\": \"{}\", \"class\": \"{}\" }}\n",
+        icon, profile, profile
+    )?;
+    handle.flush()?;
+    Ok(())
+}
+
+fn update(path: &Path) -> std::io::Result<()> {
+    let profile = get_current_profile(path)?;
+    send_custom_script_data(&profile.trim())
+}
+
+fn main() {
+    let path = Path::new(PLATFORM_PROFILE_PATH);
+    if !path.exists() {
+        return;
+    }
+
+    let mut inotify = Inotify::init().expect("Failed to initialize inotify");
+    update(path).expect("Failed to get initial value");
+    inotify
+        .add_watch(path, WatchMask::MODIFY)
+        .expect("Failed to add inotify watch");
+
+    let mut buffer = [0u8; 4096];
+    loop {
+        let events = inotify
+            .read_events_blocking(&mut buffer)
+            .expect("Failed to read inotify events");
+        for event in events {
+            if event.mask.contains(EventMask::MODIFY) {
+                update(&path).expect("Failed to get updated value");
+            }
+        }
+    }
+}
