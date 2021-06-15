@@ -10,5 +10,5 @@ profile {
 profile {
     output "Dell Inc. DELL U2715H H7YCC5A40C1S" enable position 0,0
     output "Dell Inc. DELL S2721DGF 2JHW523"    enable position 2560,0
-    output eDP-1 enable position 0,1440
+    output eDP-1 enable position 1600,1440
 }
