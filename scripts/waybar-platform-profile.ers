@@ -1,8 +1,9 @@
 #!/usr/bin/rust-script
-// cargo-deps: inotify, lazy_static
+// cargo-deps: inotify, lazy_static, libc
 // vim: ft=rust
 use inotify::{EventMask, Inotify, WatchMask};
 use lazy_static::lazy_static;
+use libc::{self, SIGTERM};
 use std::collections::HashMap;
 use std::fs::File;
 use std::io::prelude::*;
@@ -45,11 +46,19 @@ fn update(path: &Path) -> std::io::Result<()> {
     send_custom_script_data(&profile.trim())
 }
 
+fn set_parent_death_signal(sig: libc::c_int) {
+    unsafe {
+        // don't care about the result
+        libc::prctl(libc::PR_SET_PDEATHSIG, sig);
+    }
+}
+
 fn main() {
     let path = Path::new(PLATFORM_PROFILE_PATH);
     if !path.exists() {
         return;
     }
+    set_parent_death_signal(SIGTERM);
 
     let mut inotify = Inotify::init().expect("Failed to initialize inotify");
     update(path).expect("Failed to get initial value");
