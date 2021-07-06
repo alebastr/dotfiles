@@ -7,6 +7,7 @@ endfunction
 
 call plug#begin(has('win32') ? '~/vimfiles/bundle' : '~/.vim/bundle')
 let has_async = has('timers') && ((has('job') && has('channel')) || has('nvim'))
+let has_nvim_lsp = has('nvim-0.5.0')
 
 " Workaround for vim/vim#3117
 try | exec 'pythonx' 'pass' | catch | endtry
@@ -57,11 +58,14 @@ Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 
 " Language Server
-Plug 'autozimu/LanguageClient-neovim', {
+Plug 'neovim/nvim-lspconfig', LoadIf(has_nvim_lsp)
+Plug 'deoplete-plugins/deoplete-lsp', LoadIf(has_nvim_lsp)
+Plug 'ojroques/nvim-lspfuzzy', LoadIf(has_nvim_lsp)
+Plug 'autozimu/LanguageClient-neovim', LoadIf(!has_nvim_lsp, {
     \ 'branch': 'next',
     \ 'do': (has('win32') ? 'powershell.exe -ExecutionPolicy Bypass -File install.ps1'
             \ : 'bash install.sh')
-    \ }
+    \ })
 
 " Completion
 let deoplete_opts = has('nvim') ? { 'do': ':UpdateRemotePlugins' } : {}
@@ -83,6 +87,7 @@ Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
 Plug 'rust-lang/rust.vim'
 
 unlet has_async
+unlet has_nvim_lsp
 unlet has_nvim_rpc
 call plug#end()
 
@@ -264,9 +269,9 @@ let g:LanguageClient_serverCommands = {
     \ 'cpp': s:cmd('clangd', '--background-index', '--compile-commands-dir=build'),
     \ 'python': s:cmd('pyls'),
     \ 'rust': s:cmd(rust_langserver),
-    \ 'javascript': s:cmd('javascript-typescript-stdio'),
-    \ 'typescript': s:cmd('javascript-typescript-stdio'),
-    \ 'typescript.tsx': s:cmd('javascript-typescript-stdio')
+    \ 'javascript': s:cmd('typescript-language-server', '--stdio'),
+    \ 'typescript': s:cmd('typescript-language-server', '--stdio'),
+    \ 'typescript.tsx': s:cmd('typescript-language-server', '--stdio')
     \ }
 
 let g:LanguageClient_rootMarkers = {
@@ -279,10 +284,53 @@ let g:LanguageClient_rootMarkers = {
 " Automatically start language servers.
 let g:LanguageClient_autoStart = 1
 
-nnoremap <F4> :call LanguageClient_contextMenu()<CR>
-nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
-nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+if !has('nvim-0.5.0')
+    nmap <F4> <Plug>(lcn-menu)
+    nmap <silent> K <Plug>(lcn-hover)
+    nmap <silent> gd <Plug>(lcn-definition)
+    nmap <silent> <F2> <Plug>(lcn-rename)
+else
+lua <<LSPCONFIG
+local lspconfig = require('lspconfig')
+local lspfuzzy = require ('lspfuzzy')
+local servers = { "clangd", "pyls", "rust_analyzer", "tsserver" }
+
+lspfuzzy.setup {}
+
+local on_attach = function(client, bufnr)
+    local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+    local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+    local opts = { noremap=true, silent=true }
+    buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+    buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+    buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+    buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+    buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+    buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+    buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+    buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+    buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+    buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+    buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+    buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+    buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+    buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+    buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+    buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+    buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+    buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+end
+
+for _, lsp in ipairs(servers) do
+    lspconfig[lsp].setup {
+        on_attach = on_attach,
+        flags = {
+            debounce_text_changes = 150,
+        }
+    }
+end
+LSPCONFIG
+endif
 
 "-------------------------------------------------------------------------------
 " Neoformat
