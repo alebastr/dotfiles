@@ -10,6 +10,10 @@ let has_async = has('timers') && ((has('job') && has('channel')) || has('nvim'))
 
 " Workaround for vim/vim#3117
 try | exec 'pythonx' 'pass' | catch | endtry
+
+" Let's start from this
+Plug 'tpope/vim-sensible'
+
 " Check that (n)vim is capablle of running neovim remote plugins
 " and load shims if necessary
 let has_nvim_rpc=has('nvim') || (version >= 800 && has('python3'))
@@ -18,19 +22,14 @@ Plug 'roxma/vim-hug-neovim-rpc', LoadIf(has_nvim_rpc && !has('nvim'))
 
 " Look and feel
 Plug 'vim-scripts/xterm16.vim'
-"Plug 'altercation/vim-colors-solarized'
-"Plug 'lifepillar/vim-solarized8'
 Plug 'nanotech/jellybeans.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 "Plug 'vim-scripts/let-modeline.vim'
-"Plug 'scrooloose/nerdtree'
-"Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'jlanzarotta/bufexplorer'
 
 " Behavior/General
 Plug 'easymotion/vim-easymotion'
-"Plug 'ervandew/supertab'
 Plug 'jiangmiao/auto-pairs'
 Plug 'sjl/gundo.vim'
 Plug 'tomtom/tcomment_vim' " gc{motion}, gc<count>c{motion}, gcc
@@ -52,11 +51,8 @@ Plug 'dense-analysis/ale', LoadIf(has_async)
 Plug 'sbdchd/neoformat'
 Plug 'editorconfig/editorconfig-vim'
 
-" Required to run tsuquyomi with vim7/neovim
-"Plug 'Shougo/vimproc.vim'
-
 " Version Control
-"Plug 'http://repo.or.cz/r/vcscommand.git'
+"Plug 'http://repo.or.cz/r/vcscommand.git' " p4/hg/etc...
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 
@@ -75,43 +71,28 @@ if py3eval('__import__("msgpack").version[0]') < 1
 endif
 Plug 'Shougo/deoplete.nvim', LoadIf(has_nvim_rpc, deoplete_opts)
 unlet deoplete_opts
-"Plug 'Shougo/denite.nvim',   LoadIf(has_nvim_rpc, has('nvim') ? { 'do': ':UpdateRemotePlugins' } : {})
-"Plug 'Valloric/YouCompleteMe'
 
 " Languages
 Plug 'HerringtonDarkholme/yats.vim'
 Plug 'PProvost/vim-ps1'
-"Plug 'Quramy/tsuquyomi'
-"Plug 'Rip-Rip/clang_complete'
+Plug  'adelarsq/neofsharp.vim'
 "Plug 'fsharp/vim-fsharp', {'for': 'fsharp'}
-"Plug 'mhartington/nvim-typescript'
+"Plug 'othree/yajs.vim'
 "Plug 'othree/xml.vim'
 Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
 Plug 'rust-lang/rust.vim'
-Plug '~/sources/mesonbuild/meson/data/syntax-highlighting/vim'
 
 unlet has_async
 unlet has_nvim_rpc
 call plug#end()
 
-filetype plugin indent on
-syntax enable
-
-" allow backspacing over everything in insert mode
-set backspace=indent,eol,start
-"set nobackup       " DON'T keep a backup file
 set encoding=utf-8
 set fileencodings=utf-8,cp1251,koi8-r,default
-set history=50      " keep 50 lines of command line history
-set ruler           " show the cursor position all the time
 set showcmd         " display incomplete commands
-set incsearch       " do incremental searching
 set tabstop=4
 set shiftwidth=4    " 4 characters for indenting
 set expandtab
 set number          " line numbers
-" set cindent
-set autoindent
 set foldmethod=syntax
 set foldlevel=8
 set scrolljump=5
@@ -123,11 +104,8 @@ set signcolumn=yes  " Always show sign column
 set showmatch       " showmatch: Show the matching bracket for the last ')'?
 set novisualbell    " visual bell instead of beeping
 set wildignore=*.bak,*.o,*.e,*~ " wildmenu: ignore these extensions
-set wildmenu        " command-line completion in an enhanced mode
 set completeopt=menu,longest,preview
 set confirm
-" always show status line (also:vim-airline)
-set laststatus=2
 " airline already displays mode
 set noshowmode
 set nofixeol
@@ -234,10 +212,6 @@ endif
 " CONFIGURATIONS FOR SPECIFIC FILE TYPES
 "===============================================================================
 
-" New file templates:
-":autocmd BufNewFile  *.sh      0r ~/.vim/templates/template.sh
-":autocmd BufNewFile  *.pl      0r ~/.vim/templates/template.pl
-
 " vim -b : edit binary using xxd-format!
 augroup Binary
 au!
@@ -324,35 +298,6 @@ nnoremap <silent> <A-S-F> :Neoformat<CR>
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 
 "-------------------------------------------------------------------------------
-" YouCompleteMe
-"-------------------------------------------------------------------------------
-let g:ycm_auto_trigger = 0
-
-" YCM and UltiSnips compatibility
-let g:UltiSnipsExpandTrigger = "<nop>"
-let g:ulti_expand_or_jump_res = 0
-function ExpandSnippetOrCarriageReturn()
-    let snippet = UltiSnips#ExpandSnippetOrJump()
-    if g:ulti_expand_or_jump_res > 0
-        return snippet
-    else
-        return "\<CR>"
-    endif
-endfunction
-inoremap <expr> <CR> pumvisible() ? "<C-R>=ExpandSnippetOrCarriageReturn()<CR>" : "\<CR>"
-
-"-------------------------------------------------------------------------------
-" clang_complete
-"-------------------------------------------------------------------------------
-let g:clang_complete_copen = 0
-let g:clang_periodic_quickfix = 0
-let g:clang_snippets=1
-let g:clang_snippets_engine = 'ultisnips'
-let g:clang_use_library = 1
-" for ->, .
-let g:clang_complete_auto = 0
-
-"-------------------------------------------------------------------------------
 " deoplete
 "-------------------------------------------------------------------------------
 let g:deoplete#enable_at_startup = 1
@@ -374,8 +319,12 @@ autocmd StdinReadPre * let s:std_in=1
 "-------------------------------------------------------------------------------
 " Airline 
 "-------------------------------------------------------------------------------
+let g:airline_symbols_ascii = 1
 let g:airline#extensions#branch#vcs_priority = ['git']
 let g:airline#extensions#branch#vcs_checks = []
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#show_close_button = 0
+let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
 
 "-------------------------------------------------------------------------------
 " CtrlP
@@ -436,67 +385,6 @@ if has('python3')
     let g:gundo_prefer_python3 = 1
 endif
 "-------------------------------------------------------------------------------
-" NERDTree
-"-------------------------------------------------------------------------------
-"let g:NERDTreeWinSize = 23
-"let g:NERDTreeWinPos = "left"
-"let g:NERDTreeAutoCenter = 0
-"let g:NERDTreeHighlightCursorline = 0
-"autocmd StdinReadPre * let s:std_in=1
-"autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-"autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
-
-"-------------------------------------------------------------------------------
 " Buffer explorer
 "-------------------------------------------------------------------------------
 noremap gb   :BufExplorerHorizontalSplit<CR>
-
-"-------------------------------------------------------------------------------
-" Tab labels
-" Code from http://konishchevdmitry.blogspot.com
-"-------------------------------------------------------------------------------
-if exists('+showtabline')
-    function! MyTabLine()
-        let tabline = ''
-        for i in range(tabpagenr('$'))
-            if i + 1 == tabpagenr()
-                let tabline .= '%#TabLineSel#'
-            else
-                let tabline .= '%#TabLine#'
-            endif
-            let tabline .= '%' . (i + 1) . 'T'
-            let tabline .= ' %{MyTabLabel(' . (i + 1) . ')} |'
-        endfor
-        let tabline .= '%#TabLineFill#%T'
-        if tabpagenr('$') > 1
-            let tabline .= '%=%#TabLine#%999XX'
-        endif
-        return tabline
-    endfunction
-
-    function! MyTabLabel(n)
-        let label = ''
-        let buflist = tabpagebuflist(a:n)
-        let label = substitute(bufname(buflist[tabpagewinnr(a:n) - 1]), '.*/', '', '')
-
-        if label == ''
-            let label = '[No Name]'
-        endif
-
-        let label .= ' (' . a:n . ')'
-        for i in range(len(buflist))
-            if getbufvar(buflist[i], "&modified")
-                let label = '[+] ' . label
-                break
-            endif
-        endfor
-        return label
-    endfunction
-
-    function! MyGuiTabLabel()
-        return '%{MyTabLabel(' . tabpagenr() . ')}'
-    endfunction
-
-    set tabline=%!MyTabLine()
-    set guitablabel=%!MyGuiTabLabel()
-endif
