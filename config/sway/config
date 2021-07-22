@@ -289,5 +289,6 @@ bar {
 #   status_command while date +'%Y-%m-%d %l:%M:%S %p'; do sleep 1; done
 }
 
+include local-$HOSTNAME.conf
 include /etc/sway/config.d/*
 include config.d/*.conf
