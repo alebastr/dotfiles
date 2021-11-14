@@ -109,7 +109,7 @@ set signcolumn=yes  " Always show sign column
 set showmatch       " showmatch: Show the matching bracket for the last ')'?
 set novisualbell    " visual bell instead of beeping
 set wildignore=*.bak,*.o,*.e,*~ " wildmenu: ignore these extensions
-set completeopt=menu,longest,preview
+set completeopt=menuone,noselect
 set confirm
 " airline already displays mode
 set noshowmode
@@ -242,6 +242,13 @@ let g:lisp_rainbow = 1
 "===============================================================================
 
 "-------------------------------------------------------------------------------
+" Snippets
+"-------------------------------------------------------------------------------
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+"-------------------------------------------------------------------------------
 " Language servers and plugins
 "-------------------------------------------------------------------------------
 let g:ale_disable_lsp = 1
@@ -293,8 +300,33 @@ else
 lua <<LSPCONFIG
 local lspconfig = require('lspconfig')
 local lspfuzzy = require ('lspfuzzy')
-local servers = { "clangd", "pyls", "rust_analyzer", "tsserver" }
-
+local caps = vim.lsp.protocol.make_client_capabilities()
+caps.textDocument.completion.completionItem.snippetSupport = true
+caps.textDocument.completion.completionItem.resolveSupport = {
+  properties = {
+    'documentation',
+    'detail',
+    'additionalTextEdits',
+  }
+}
+local servers = {
+    clangd = {},
+    pyls = {},
+    rust_analyzer = {
+        capabilities = caps,
+        settings = {
+            ["rust-analyzer"] = {
+                cargo = {
+                    loadOutDirsFromCheck = true
+                },
+                procMacro = {
+                    enable = true
+                },
+            }
+        }
+    },
+    tsserver = {},
+}
 lspfuzzy.setup {}
 
 local on_attach = function(client, bufnr)
@@ -321,12 +353,11 @@ local on_attach = function(client, bufnr)
     buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
 end
 
-for _, lsp in ipairs(servers) do
+for lsp, opt in pairs(servers) do
     lspconfig[lsp].setup {
         on_attach = on_attach,
-        flags = {
-            debounce_text_changes = 150,
-        }
+        flags = { debounce_text_changes = 150, },
+        table.unpack(opt)
     }
 end
 LSPCONFIG
