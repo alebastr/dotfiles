@@ -9,4 +9,5 @@ export XDG_CURRENT_DESKTOP=sway
 export XDG_SESSION_DESKTOP=sway
 export XDG_SESSION_TYPE=wayland
 
+ulimit -S -n $(( 1 << 14 ))
 exec /bin/systemd-cat "/usr/bin/$(basename "$0")" "$@"
