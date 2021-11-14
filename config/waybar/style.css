@@ -1,8 +1,11 @@
 * {
+    font-family: 'Liberation Mono', 'Font Awesome 5 Free', 'Font Awesome 5 Brands', monospace;
+    font-size: 13px;
+}
+
+window#waybar, button {
     border: none;
     border-radius: 0;
-    font-family: Liberation Mono, 'Font Awesome 5 Free', 'Font Awesome 5 Brands', monospace;
-    font-size: 15px;
     min-height: 0;
 }
 
@@ -23,15 +26,12 @@ window#waybar.empty {
     background-color: transparent;
 }
 
-window#waybar.calibre-gui {
-    background-color: #2d2d2d;
-}
-
 window#waybar.firefox {
     /* Arc-Dark theme */
     background-color: #565965;
 }
 
+window#waybar.calibre-gui,
 window#waybar.thunderbird {
     /* Arc-Dark theme */
     background-color: #2f343f;
@@ -41,7 +41,7 @@ window#waybar.thunderbird {
 #workspaces button {
     padding: 0 8px;
     background-color: transparent;
-    color: white;
+    color: inherit;
     /* Use box-shadow instead of border so the text isn't offset */
     box-shadow: inset 0 -2px transparent;
 }
@@ -107,7 +107,7 @@ window#waybar.thunderbird {
     margin-right: 0;
 }
 
-#battery.charging, #battery.plugged {
+#battery.charging {
     background-color: rgba(38, 166, 91, 0.2);
 }
 
@@ -142,4 +142,13 @@ window#waybar.thunderbird {
 #pulseaudio.muted {
     background: #90b1b1;
     color: #2a5c45;
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+    box-shadow: inset 0 -3px #eb4d4b;
 }

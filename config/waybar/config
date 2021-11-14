@@ -88,6 +88,8 @@
     "clock": {
         "format": "{:%a %b %d %R}",
         "format-alt": "{:%R}",
+        "locale": "en_US.UTF-8",
+        "timezone": "America/Los_Angeles",
         "tooltip-format": "<b>Sunnyvale</b>\n{:%a %d %b %R %z}\n\n{calendar}"
     },
     "clock#tsk": {
