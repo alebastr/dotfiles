@@ -2,7 +2,7 @@
 Name=Udiskie
 Comment=Automounter for removable media
 Icon=drive-removable-media
-Exec=udiskie --appindicator
+Exec=udiskie --appindicator --no-automount --smart-tray
 Terminal=false
 Type=Application
 NoDisplay=true
