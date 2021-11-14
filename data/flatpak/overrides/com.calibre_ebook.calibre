@@ -1,4 +1,8 @@
+[Context]
+filesystems=xdg-data/Trash;xdg-config/Kvantum:ro;
+
 [Environment]
 QT_QPA_PLATFORM=xcb
 CALIBRE_USE_DARK_PALETTE=1
-CALIBRE_USE_SYSTEM_THEME=0
+CALIBRE_USE_SYSTEM_THEME=1
+QT_STYLE_OVERRIDE=kvantum
