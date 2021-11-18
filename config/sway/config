@@ -75,25 +75,6 @@ input type:keyboard {
 
 ### Key bindings
 # Horrible mix of awesome, xmonad and i3 bindings
-
-#
-# Media keys
-#
-bindsym --locked {
-    XF86AudioRaiseVolume  exec pactl set-sink-volume @DEFAULT_SINK@ +3%
-    XF86AudioLowerVolume  exec pactl set-sink-volume @DEFAULT_SINK@ -3%
-    XF86AudioMute         exec pactl set-sink-mute @DEFAULT_SINK@ toggle
-    XF86AudioMicMute      exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
-    XF86AudioNext         exec playerctl next
-    XF86AudioPlay         exec playerctl play-pause
-    XF86AudioPrev         exec playerctl previous
-    XF86MonBrightnessDown exec light -U 5 && \
-        notify-send -h string:x-canonical-private-synchronous:backlight \
-            -h int:value:$(light) -t 800 backlight
-    XF86MonBrightnessUp   exec light -A 5 && \
-        notify-send -h string:x-canonical-private-synchronous:backlight \
-            -h int:value:$(light) -t 800 backlight
-}
 #
 # Basics:
 #
@@ -259,11 +240,6 @@ mode "resize" {
     bindsym Escape mode "default"
 }
 bindsym --to-code $mod+r mode "resize"
-
-mode "passthrough" {
-    bindsym $mod+Pause mode default
-}
-bindsym $mod+Pause mode "passthrough"
 
 ### Window configs and defaults
 for_window [class="pavucontrol-qt"] floating enable
