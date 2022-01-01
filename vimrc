@@ -311,7 +311,7 @@ caps.textDocument.completion.completionItem.resolveSupport = {
 }
 local servers = {
     clangd = {},
-    pyls = {},
+    pylsp = {},
     rust_analyzer = {
         capabilities = caps,
         settings = {
