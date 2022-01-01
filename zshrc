@@ -68,7 +68,7 @@ if [ -f "$ZPLUG_HOME/init.zsh" ]; then
     zplug "softmoth/zsh-vim-mode"
     zplug "zsh-users/zsh-completions"
 #    zplug "zsh-users/zsh-syntax-highlighting"
-    zplug "zdharma/fast-syntax-highlighting"
+    zplug "zdharma-continuum/fast-syntax-highlighting"
 
     if ! zplug check --verbose; then
         printf "Install? [y/N]: "
