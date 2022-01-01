@@ -4,7 +4,7 @@
 # functions, options, key bindings, etc.
 #
 
-autoload -Uz compinit
+autoload -U compinit
 compinit
 
 #allow tab completion in the middle of a word
@@ -50,9 +50,6 @@ test -f ~/dotfiles/tmux.sh && source ~/dotfiles/tmux.sh
 
 if command -v most >/dev/null; then
     export PAGER=most
-    if command -v bat >/dev/null; then
-        alias bat="env PAGER=less bat"
-    fi
 fi
 
 ## load plugins
@@ -67,7 +64,6 @@ if [ -f "$ZPLUG_HOME/init.zsh" ]; then
     zplug "MichaelAquilina/zsh-you-should-use"
     zplug "softmoth/zsh-vim-mode"
     zplug "zsh-users/zsh-completions"
-#    zplug "zsh-users/zsh-syntax-highlighting"
     zplug "zdharma-continuum/fast-syntax-highlighting"
 
     if ! zplug check --verbose; then
