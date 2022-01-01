@@ -53,27 +53,19 @@ if command -v most >/dev/null; then
 fi
 
 ## load plugins
-export ZPLUG_HOME=~/.zplug
+export ADOTDIR=$HOME/.antigen
 
-if [ ! -f "$ZPLUG_HOME/init.zsh" ] && command -v git >/dev/null; then
-    git clone https://github.com/zplug/zplug.git "$ZPLUG_HOME"
+if [ ! -f "$ADOTDIR/antigen.zsh" ] && command -v git >/dev/null; then
+    git clone https://github.com/zsh-users/antigen "$ADOTDIR"
 fi
-if [ -f "$ZPLUG_HOME/init.zsh" ]; then
-    source "$ZPLUG_HOME/init.zsh"
+if [ -f "$ADOTDIR/antigen.zsh" ]; then
+    source "$ADOTDIR/antigen.zsh"
 
-    zplug "MichaelAquilina/zsh-you-should-use"
-    zplug "softmoth/zsh-vim-mode"
-    zplug "zsh-users/zsh-completions"
-    zplug "zdharma-continuum/fast-syntax-highlighting"
+    antigen bundle zsh-users/zsh-completions
+    antigen bundle zdharma-continuum/fast-syntax-highlighting
+    antigen bundle softmoth/zsh-vim-mode@main
 
-    if ! zplug check --verbose; then
-        printf "Install? [y/N]: "
-        if read -q; then
-            echo; zplug install
-        fi
-    fi
-
-    zplug load
+    antigen apply
 fi
 
 ## load local configuration
