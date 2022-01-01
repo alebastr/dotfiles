@@ -10,4 +10,4 @@ upscaling_method = nearest_neighbour
 <Ctrl+Right> = pan -16   0
 <y>          = exec wl-copy <"$imv_current_file"
 <Shift+Delete> = exec trash "$imv_current_file"
-
+ww           = exec ln -sf "$imv_current_file" $(xdg-user-dir PICTURES)/current-wallpaper.jpg && swaymsg output \* bg $(xdg-user-dir PICTURES)/current-wallpaper.jpg fill
