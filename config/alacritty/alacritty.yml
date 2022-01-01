@@ -104,8 +104,8 @@
 # Font configuration
 font:
   normal:
-  #  family: Liberation Mono
-    family: LiterationMono Nerd Font
+    family: Liberation Mono
+  #  family: LiterationMono Nerd Font
   #  family: Cascadia Code
   #  family: Cousine
   #  family: Fira Code
