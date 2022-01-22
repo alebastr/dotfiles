@@ -19,10 +19,14 @@ user_pref("browser.ctrlTab.recentlyUsedOrder", false);
 user_pref("browser.newtabpage.enabled", false);
 user_pref("browser.startup.homepage", "about:blank");
 user_pref("browser.startup.page", 3);
+/* Disable CSD */
+user_pref("browser.tabs.inTitlebar", 0);
 /* Disable builtin password manager */
 user_pref("signon.rememberSignons", false);
 /* I hit that way too often... */
 user_pref("browser.quitShortcut.disabled", true);
+/* VA-API */
+user_pref("media.ffmpeg.vaapi.enabled", true);
 
 /* Privacy.
  * See also: https://github.com/arkenfox/user.js/blob/master/user.js
