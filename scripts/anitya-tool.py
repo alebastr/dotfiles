@@ -93,9 +93,9 @@ def cmd_create_crate(sess, args):
         "name": args.name,
     }
     resp = sess.post(f"https://{args.host}/api/v2/projects/", json=params)
-    logging.info("Status: %s", resp.status_code)
+    logging.info("Project status: %s", resp.status_code)
     logging.debug(resp.json())
-    if resp.status_code < 200 or resp.status_code >= 300:
+    if resp.status_code // 100 != 2:
         raise Exception("Failed to create project")
 
     proj = resp.json()
@@ -106,8 +106,22 @@ def cmd_create_crate(sess, args):
         "version_scheme": "Semantic",
     }
     resp = sess.post(f"https://{args.host}/api/v2/versions/", json=params)
-    logging.info("Status: %s", resp.status_code)
+    logging.info("Version status: %s", resp.status_code)
     logging.debug(resp.json())
+    if resp.status_code // 100 != 2:
+        raise Exception("Failed to set version check options")
+
+    params = {
+        "distribution": "Fedora",
+        "package_name": f"rust-{args.name}",
+        "project_ecosystem": CRATES_ECOSYSTEM,
+        "project_name": args.name,
+    }
+    resp = sess.post(f"https://{args.host}/api/v2/packages/", json=params)
+    logging.info("Package status: %s", resp.status_code)
+    logging.debug(resp.json())
+    if resp.status_code // 100 != 2:
+        raise Exception("Failed to create package")
 
 
 def cmd_update_args(subparsers):
