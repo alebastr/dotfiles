@@ -1,5 +1,5 @@
 [Context]
-filesystems=xdg-data/Trash;xdg-config/Kvantum:ro;
+filesystems=xdg-data/Trash;xdg-config/Kvantum:ro;xdg-config/calibre:create;
 
 [Environment]
 QT_QPA_PLATFORM=xcb
