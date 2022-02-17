@@ -68,6 +68,11 @@ if [ -f "$ADOTDIR/antigen.zsh" ]; then
     antigen apply
 fi
 
+## register direnv hook
+if command -v direnv >/dev/null; then
+    eval "$(direnv hook zsh)"
+fi
+
 ## load local configuration
 test -e ~/.env.local   && source ~/.env.local
 test -e ~/.zshrc.local && source ~/.zshrc.local
@@ -82,4 +87,4 @@ else
 fi
 
 ## print fortune
-test -e /usr/bin/fortune && /usr/bin/fortune
+test -e /usr/bin/fortune && /usr/bin/fortune || :
