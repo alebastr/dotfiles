@@ -1,25 +1,37 @@
 # tmux aliases and cgroup wrappers for bash/zsh
-if command -v tmux >/dev/null; then
-    # start tmux in tmux-UUID.slice
-    if command -v systemd-run >/dev/null; then
-        function tmux {
-            local UUID=`uuidgen | sed s/\-//g`;
-            systemd-run --quiet --same-dir --user --scope \
-                --slice tmux-$UUID --unit tmux-$UUID      \
-                tmux "$@";
-        }
-    fi
-    # connect to tmux default session in remote shells
-    if [[ -n "$SSH_CONNECTION" && -z "$TMUX" ]]; then
-        tmux new -A -s default
-    fi
+# shellcheck shell=bash
+#
+if ! command -v tmux >/dev/null; then
+    return 0
 fi
 
 if [ -n "$TMUX" ]; then
     # define function for refreshing environment from tmux
     function refresh-environment {
-        tmux show-environment -s | grep -v "^unset" | source /dev/stdin
+        eval "$(tmux show-environment -s | grep -v "^unset")"
     }
+elif [ -n "$SSH_CONNECTION" ]; then
+    # connect to tmux default session in remote shells
+    tmux new -A -s default
+fi
+
+# check if systemd is running and required commands are available
+if [ ! -d "$XDG_RUNTIME_DIR/systemd" ] ||
+        ! command -v systemd-run >/dev/null ||
+        ! command -v busctl > /dev/null; then
+    return 0
+fi
+
+if [ -z "$TMUX" ]; then
+    # start tmux in tmux-UUID.slice
+    function tmux {
+        local UUID
+        UUID=$(uuidgen | tr -d '-')
+        systemd-run --quiet --same-dir --user --scope \
+            --slice "tmux-$UUID" --unit "tmux-$UUID"  \
+            tmux "$@";
+    }
+else
     function get-current-unit {
         local CGROUP
         CGROUP=$(cat /proc/self/cgroup)
@@ -55,6 +67,4 @@ if [ -n "$TMUX" ]; then
         fi
     } && _ 2>/dev/null;
     unset -f _ get-current-unit get-current-slice;
-else
-    function refresh-environment { true; }
 fi
