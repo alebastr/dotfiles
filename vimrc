@@ -51,6 +51,7 @@ Plug 'vim-syntastic/syntastic', LoadIf(!has_async)
 Plug 'dense-analysis/ale', LoadIf(has_async)
 Plug 'sbdchd/neoformat'
 Plug 'editorconfig/editorconfig-vim'
+Plug 'jamessan/vim-gnupg'
 
 " Version Control
 "Plug 'http://repo.or.cz/r/vcscommand.git' " p4/hg/etc...
@@ -79,7 +80,7 @@ unlet deoplete_opts
 " Languages
 Plug 'HerringtonDarkholme/yats.vim'
 Plug 'PProvost/vim-ps1'
-Plug  'adelarsq/neofsharp.vim'
+"Plug  'adelarsq/neofsharp.vim'
 "Plug 'fsharp/vim-fsharp', {'for': 'fsharp'}
 "Plug 'othree/yajs.vim'
 "Plug 'othree/xml.vim'
@@ -216,6 +217,8 @@ endif
 "===============================================================================
 " CONFIGURATIONS FOR SPECIFIC FILE TYPES
 "===============================================================================
+"
+let g:GPGDefaultRecipients=["4F071603387A382A"]
 
 " vim -b : edit binary using xxd-format!
 augroup Binary
