@@ -53,7 +53,7 @@ if command -v most >/dev/null; then
 fi
 
 ## load plugins
-export ADOTDIR=$HOME/.antigen
+export ADOTDIR=${XDG_CACHE_HOME:-$HOME/.cache}/antigen
 
 if [ ! -f "$ADOTDIR/antigen.zsh" ] && command -v git >/dev/null; then
     git clone https://github.com/zsh-users/antigen "$ADOTDIR"
