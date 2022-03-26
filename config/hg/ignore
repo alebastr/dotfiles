@@ -1,0 +1,12 @@
+syntax: glob
+*.orig
+*.rej
+*.swo
+*.swp
+
+syntax: rootglob
+.cache/
+.git/
+.gdb_history
+.gdbinit
+.reviewboardrc

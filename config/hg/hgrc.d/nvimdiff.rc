@@ -1,0 +1,7 @@
+# vim: ft=cfg
+[ui]
+merge = nvimdiff
+
+[merge-tools]
+nvimdiff.executable = nvim
+nvimdiff.args = -d $base $local $output $other +close +close

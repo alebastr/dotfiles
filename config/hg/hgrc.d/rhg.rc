@@ -1,0 +1,6 @@
+# vim: ft=cfg
+[rhg]
+on-unsupported = fallback
+fallback-executable = /usr/bin/hg
+allowed-extensions = rebase, absorb
+ignored-extensions = hgk

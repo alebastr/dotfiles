@@ -1,0 +1,19 @@
+# vim: ft=cfg
+[ui]
+ignore = ${HOME}/.config/hg/ignore
+tweakdefaults = True
+username = Aleksei Bavshin <alebastr89@gmail.com>
+
+[diff]
+showfunc = 1
+
+[extensions]
+amend =
+churn =
+histedit =
+mq =
+rebase =
+uncommit =
+
+%include hgrc.d/nvimdiff.rc
+%include hgrc.d/rhg.rc
