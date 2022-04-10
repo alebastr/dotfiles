@@ -60,6 +60,7 @@ Plug 'tpope/vim-fugitive'
 
 " Language Server
 Plug 'neovim/nvim-lspconfig', LoadIf(has_nvim_lsp)
+Plug 'p00f/clangd_extensions.nvim', LoadIf(has_nvim_lsp)
 Plug 'deoplete-plugins/deoplete-lsp', LoadIf(has_nvim_lsp)
 Plug 'ojroques/nvim-lspfuzzy', LoadIf(has_nvim_lsp)
 Plug 'autozimu/LanguageClient-neovim', LoadIf(!has_nvim_lsp, {
@@ -78,7 +79,7 @@ Plug 'Shougo/deoplete.nvim', LoadIf(has_nvim_rpc, deoplete_opts)
 unlet deoplete_opts
 
 " Languages
-Plug 'HerringtonDarkholme/yats.vim'
+Plug 'nvim-treesitter/nvim-treesitter', LoadIf(has('nvim'), { 'do': ':TSUpdate' })
 Plug 'PProvost/vim-ps1'
 "Plug  'adelarsq/neofsharp.vim'
 "Plug 'fsharp/vim-fsharp', {'for': 'fsharp'}
@@ -301,42 +302,19 @@ if !has('nvim-0.5.0')
     nmap <silent> <F2> <Plug>(lcn-rename)
 else
 lua <<LSPCONFIG
-local lspconfig = require('lspconfig')
-local lspfuzzy = require ('lspfuzzy')
-local caps = vim.lsp.protocol.make_client_capabilities()
-caps.textDocument.completion.completionItem.snippetSupport = true
-caps.textDocument.completion.completionItem.resolveSupport = {
-  properties = {
-    'documentation',
-    'detail',
-    'additionalTextEdits',
-  }
-}
-local servers = {
-    clangd = {},
-    pylsp = {},
-    rust_analyzer = {
-        capabilities = caps,
-        settings = {
-            ["rust-analyzer"] = {
-                cargo = {
-                    loadOutDirsFromCheck = true
-                },
-                procMacro = {
-                    enable = true
-                },
-            }
-        }
-    },
-    tsserver = {},
-}
-lspfuzzy.setup {}
+-- See `:help vim.diagnostic.*` for documentation on any of the below functions
+local opts = { noremap=true, silent=true }
+vim.api.nvim_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+vim.api.nvim_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
 
 local on_attach = function(client, bufnr)
     local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
     local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-    local opts = { noremap=true, silent=true }
+    -- Enable completion triggered by <c-x><c-o>
     buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+    -- See `:help vim.lsp.*` for documentation on any of the below functions
     buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
     buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
     buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
@@ -349,13 +327,37 @@ local on_attach = function(client, bufnr)
     buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
     buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
     buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-    buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-    buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-    buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-    buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-    buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+    buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 end
 
+local caps = vim.lsp.protocol.make_client_capabilities()
+caps.textDocument.completion.completionItem.snippetSupport = true
+caps.textDocument.completion.completionItem.resolveSupport = {
+  properties = {
+    'documentation',
+    'detail',
+    'additionalTextEdits',
+  }
+}
+local servers = {
+    pylsp = {},
+    rust_analyzer = {
+        capabilities = caps,
+        settings = {
+            ['rust-analyzer'] = {
+                cargo = {
+                    loadOutDirsFromCheck = true
+                },
+                procMacro = {
+                    enable = true
+                },
+            }
+        }
+    },
+    tsserver = {},
+}
+
+local lspconfig = require('lspconfig')
 for lsp, opt in pairs(servers) do
     lspconfig[lsp].setup {
         on_attach = on_attach,
@@ -363,7 +365,31 @@ for lsp, opt in pairs(servers) do
         table.unpack(opt)
     }
 end
+
+require('clangd_extensions').setup {
+    server = {
+        on_attach = on_attach,
+        flags = { debounce_text_changes = 150, },
+    },
+    extensions = {},
+}
+
+require ('lspfuzzy').setup {}
 LSPCONFIG
+endif
+
+"-------------------------------------------------------------------------------
+" tree-sitter
+"-------------------------------------------------------------------------------
+if has('nvim-0.5.0')
+lua <<TSCONFIG
+require'nvim-treesitter.configs'.setup {
+    ensure_installed = { 'c', 'cpp', 'typescript', 'tsx' },
+    highlight = {
+        enable = true,
+    },
+}
+TSCONFIG
 endif
 
 "-------------------------------------------------------------------------------
