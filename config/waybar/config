@@ -1,8 +1,31 @@
+[
 {
+    "id": "bottom",
+    "ipc": true,
+    "modes": {
+        "invisible": {
+            "layer": "bottom",
+            "passthrough": false,
+            "visible": true
+        }
+    },
+    "position": "bottom",
+    "modules-center": ["wlr/taskbar"],
+    // need this to apply styles for focused window
+    "modules-left": ["sway/window"],
+    "wlr/taskbar": {
+        "on-click": "activate",
+        "tooltip": "[{short_state}] {title}"
+    },
+    "sway/window": {
+        "format": ""
+    }
+},
+{
+    "ipc": true,
     "modules-left": [
         "custom/start",
         "sway/workspaces",
-//        "wlr/taskbar",
         "custom/layout",
         "sway/mode"
     ],
@@ -155,3 +178,4 @@
          "on-click": "pavucontrol-qt"
      }
 }
+]

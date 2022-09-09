@@ -3,12 +3,6 @@
     font-size: 13px;
 }
 
-window#waybar, button {
-    border: none;
-    border-radius: 0;
-    min-height: 0;
-}
-
 window#waybar {
     /* match with alacritty background_opacity */
     background-color: rgba(0, 0, 0, 0.7);
@@ -22,9 +16,19 @@ window#waybar.hidden {
     opacity: 0.2;
 }
 
+window#waybar.mode-invisible {
+    opacity: 0;
+}
+
+window#waybar.mode-invisible.empty {
+    opacity: 1;
+}
+
+/*
 window#waybar.empty {
     background-color: transparent;
 }
+*/
 
 window#waybar.firefox {
     /* Arc-Dark theme */
@@ -44,6 +48,9 @@ window#waybar.thunderbird {
     color: inherit;
     /* Use box-shadow instead of border so the text isn't offset */
     box-shadow: inset 0 -2px transparent;
+    /* Avoid rounded borders under each workspace name */
+    border: none;
+    border-radius: 0;
 }
 
 /* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
