@@ -1,0 +1,84 @@
+#!/usr/bin/rust-script
+// cargo-deps: lazy_static, libc, swayipc
+// vim: ft=rust
+use lazy_static::lazy_static;
+use libc::{self, SIGTERM};
+use std::collections::HashMap;
+use std::io::{self, Write};
+
+use swayipc::{Connection, Event, EventType, Fallible, Node, NodeLayout, WindowChange};
+
+lazy_static! {
+    static ref ICONS: HashMap<&'static str, &'static str> = {
+        let mut icons = HashMap::new();
+        icons.insert("splith", "H");
+        icons.insert("splitv", "V");
+        icons.insert("stacked", "S");
+        icons.insert("tabbed", "T");
+        icons.insert("output", "O");
+        icons
+    };
+}
+
+fn send_custom_script_data(value: &str) -> std::io::Result<()> {
+    let icon = ICONS.get(value).unwrap_or(&"?");
+    let stdout = io::stdout();
+    let mut handle = stdout.lock();
+    write!(
+        handle,
+        "{{ \"text\": \"{}\", \"tooltip\": \"{}\", \"class\": \"{}\" }}\n",
+        icon, value, value
+    )?;
+    handle.flush()?;
+    Ok(())
+}
+
+fn set_parent_death_signal(sig: libc::c_int) {
+    unsafe {
+        // don't care about the result
+        libc::prctl(libc::PR_SET_PDEATHSIG, sig);
+    }
+}
+
+fn find_focused_container(node: &Node, level: u8) -> Option<&Node> {
+    for child in &node.nodes {
+        if child.focused {
+            return Some(node);
+        }
+        if let Some(node) = find_focused_container(&child, level + 1) {
+            return Some(node);
+        }
+    }
+    None
+}
+
+fn update(tree: Node, last: &mut NodeLayout) -> std::io::Result<()> {
+    if let Some(con) = find_focused_container(&tree, 0) {
+        if con.layout != *last {
+            *last = con.layout;
+            let l = format!("{:?}", con.layout).to_lowercase();
+            send_custom_script_data(l.as_str())?
+        }
+    }
+    Ok(())
+}
+
+fn main() -> Fallible<()> {
+    set_parent_death_signal(SIGTERM);
+
+    let subs = [EventType::Window, EventType::Binding];
+    let mut conn = Connection::new()?;
+    let mut last = NodeLayout::None;
+    // initial update
+    update(conn.get_tree()?, &mut last)?;
+    for event in Connection::new()?.subscribe(subs)? {
+        match event? {
+            Event::Window(w) if w.change == WindowChange::Focus => {
+                update(conn.get_tree()?, &mut last)?
+            }
+            Event::Binding(_) => update(conn.get_tree()?, &mut last)?,
+            _ => (),
+        }
+    }
+    Ok(())
+}

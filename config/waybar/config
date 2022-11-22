@@ -71,7 +71,7 @@
         "return-type": "json",
         "tooltip": true,
         "escape": true,
-        "exec": "~/dotfiles/scripts/layout-indicator.py"
+        "exec": "~/dotfiles/scripts/waybar-container-layout.ers"
     },
     "custom/platform_profile": {
         "format": "{}",
