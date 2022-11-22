@@ -3,6 +3,7 @@ configuration {
 	modi: "run,drun,combi";
 	combi-modi: "run,drun";
 	show-icons: true;
+	window-format: "{t}";
 }
 @theme "Arc-Dark"
 
