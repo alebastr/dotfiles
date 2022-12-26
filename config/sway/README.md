@@ -1,8 +1,11 @@
 # My sway environment and configuration
 
+The configuration is based on <https://gitlab.com/fedora/sigs/sway/sway-config-fedora>
+and overrides it when necessary.
+
 ## Autostart
 ```
-% cat ~/.config/sway/config.d/99-dex-autostart.conf
+% cat ~/.config/sway/config.d/99-autostart.conf
 # sleep 2 is a hack that gives waybar time to bind to org.kde.StatusNotifierHost
 # eventually should be addressed with dbus activation
 exec 'sleep 2; systemctl --user start xdg-desktop-autostart.target'
@@ -15,9 +18,9 @@ RefuseManualStart=no
 Polkicy Kit agent is required to handle privilege escalation requests from apps like `gparted`, `virt-manager` and lots of others.
 The app of my choice is [`lxqt-policykit`](https://github.com/lxqt/lxqt-policykit) as it has native wayland support and does not pull hundreds of dependencies. Two bits of configuration would be necessary for sway integration: window rules and autostart file that is working with sway.
 ```
-% cat ~/.config/sway/config.d/60-windows-lxqt-policykit-agent.conf
-for_window[app_id="lxqt-policykit-agent"] {
-	floating enable
+% cat /usr/share/sway/config.d/50-rules-policykit-agent.conf
+for_window [app_id="lxqt-policykit-agent"] {
+    floating enable
     move position center
 }
 % cat ~/.config/autostart/lxqt-policykit-agent.desktop
@@ -36,39 +39,27 @@ OnlyShowIn=sway;
 * `xdg-desktop-portal-gtk` or `xdg-desktop-portal-kde` provides implementation for the rest of `xdg-desktop-portal`  interfaces: files, dialogs, settings, etc. Will be needed for a certain operations within flatpak sandboxed applications.
 
 ### Configuring:
-* `export XDG_CURRENT_DESKTOP=sway`  before starting sway. Generally it's enough to add the line with variable into `~/.bash_profile`, `~/.zprofile` , `~/.profile` , or whatever else works for your login shell.
-* Update dbus and systemd environment variables:
-  ```sh
-  % cat /etc/sway/config.d/10-systemd.conf
-  # Import minimal required environment for dbus and systemd user services
-  # Set XDG_CURRENT_DESKTOP to "sway" for xdg-desktop-portal service
-  exec hash dbus-update-activation-environment 2>/dev/null && \
-       dbus-update-activation-environment --systemd DISPLAY SWAYSOCK WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
-  exec export XDG_CURRENT_DESKTOP=sway && \
-       systemctl --user import-environment DISPLAY SWAYSOCK WAYLAND_DISPLAY XDG_CURRENT_DESKTOP && \
-       systemctl --user start sway-session.target
-  ```
-### Zoom, electron, etc...
-<https://gitlab.com/jamedjo/gnome-dbus-emulation-wlr/> (not tested)
+
+<https://github.com/alebastr/sway-systemd> takes care of the necessary environment setup for XDG portals.
 
 ## Applications
 
 **OS**: [Fedora](https://getfedora.org/)
 
-**Browser**: Firefox + Tridactyl
+**Browser**: Firefox + [Tridactyl](https://github.com/tridactyl/tridactyl)
 
-**Terminal**: [alacritty](https://github.com/alacritty/alacritty) or [foot](https://codeberg.org/dnkl/foot)
+**Terminal**: [foot](https://codeberg.org/dnkl/foot)
 
 **Launcher**: [rofi-wayland](https://github.com/lbonn/rofi)
 
-**Notifications**: [mako](https://github.com/emersion/mako)
+**Notifications**: [mako](https://github.com/emersion/mako) or [dunst](https://github.com/dunst-project/dunst)
 
 **Panel**: [Waybar](https://github.com/Alexays/Waybar)
 
-**Image viewer**: [imv](https://github.com/eXeC64/imv), [feh](https://github.com/derf/feh)
+**Image viewer**: [imv](https://sr.ht/~exec64/imv/), [feh](https://github.com/derf/feh)
 
 **Video**: mpv
 
-**Network**: iwd + NetworkManager, `nm-applet --indicator`
+**Network**: NetworkManager, `nm-applet --indicator`
 
-**Bluetooth**: blueman with appindicator support
+**Bluetooth**: [blueman](https://github.com/blueman-project/blueman)

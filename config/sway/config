@@ -27,9 +27,6 @@ set $app_menu $rofi_cmd -show drun
 # Both of the above in a single list
 # set $menu $rofi_cmd -show combi -combi-modes run#drun
 
-# Configure 30-bindings-volume.conf
-set $volume_step  3
-
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
@@ -48,7 +45,7 @@ output * bg ~/Pictures/current-wallpaper.jpg fill
 #
 # exec swayidle -w \
 #          timeout 300 'swaylock -f -c 000000' \
-#          timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
+#          timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
 #          before-sleep 'swaylock -f -c 000000'
 #
 # This will lock your screen after 300 seconds of inactivity, then turn off
