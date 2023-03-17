@@ -20,12 +20,8 @@ set $rofi_cmd rofi \
         -run-command 'swaymsg exec -- {cmd}' \
         -run-shell-command 'swaymsg exec -- {terminal} -e {cmd}' \
         -terminal '$term'
-# Shows a list of the executables from PATH
-set $menu     $rofi_cmd -show  run
-# Shows a list of the applications with desktop files installed
-set $app_menu $rofi_cmd -show drun
-# Both of the above in a single list
-# set $menu $rofi_cmd -show combi -combi-modes run#drun
+# Shows a list of the apps with desktop files and executables from PATH
+set $menu $rofi_cmd -show combi -modes combi -combi-modes drun#run
 
 ### Output configuration
 #
@@ -78,7 +74,6 @@ output * bg ~/Pictures/current-wallpaper.jpg fill
 
     # Start your launcher
     bindsym --to-code $mod+d exec $menu
-    bindsym --to-code $mod+Shift+d exec $app_menu
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
