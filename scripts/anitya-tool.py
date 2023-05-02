@@ -89,7 +89,7 @@ def cmd_create_crate(sess, args):
     params = {
         "backend": CRATES_BACKEND,
         "check_release": False,
-        "homepage": f"https://crates.io/crate/{args.name}",
+        "homepage": f"https://crates.io/crates/{args.name}",
         "name": args.name,
     }
     resp = sess.post(f"https://{args.host}/api/v2/projects/", json=params)
@@ -102,7 +102,7 @@ def cmd_create_crate(sess, args):
     params = {
         "dry_run": False,
         "id": proj["id"],
-        "version_filter": "alpha;beta;rc;pr",
+        "version_filter": "alpha;beta;rc;pre",
         "version_scheme": "Semantic",
     }
     resp = sess.post(f"https://{args.host}/api/v2/versions/", json=params)
