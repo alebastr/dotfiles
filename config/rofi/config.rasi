@@ -1,9 +1,8 @@
 configuration {
 	font: "Liberation Mono 12";
-	modi: "run,drun,combi";
 	combi-modi: "run,drun";
 	show-icons: true;
-	window-format: "{t}";
+	window-format: "{c} {t}";
 }
 @theme "Arc-Dark"
 
