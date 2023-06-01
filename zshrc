@@ -61,9 +61,12 @@ fi
 if [ -f "$ADOTDIR/antigen.zsh" ]; then
     source "$ADOTDIR/antigen.zsh"
 
-    antigen bundle zsh-users/zsh-completions
-    antigen bundle zdharma-continuum/fast-syntax-highlighting
-    antigen bundle softmoth/zsh-vim-mode@main
+    antigen bundle zsh-users/zsh-completions \
+                   zsh-completions.plugin.zsh
+    antigen bundle zdharma-continuum/fast-syntax-highlighting \
+                   fast-syntax-highlighting.plugin.zsh
+    antigen bundle softmoth/zsh-vim-mode@main \
+                   zsh-vim-mode.plugin.zsh
 
     antigen apply
 fi
