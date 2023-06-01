@@ -76,9 +76,24 @@ if command -v direnv >/dev/null; then
     eval "$(direnv hook zsh)"
 fi
 
+pathmunge () {
+    case ":${PATH}:" in
+        *:"$1":*)
+            ;;
+        *)
+            if [ "$2" = "after" ] ; then
+                PATH=$PATH:$1
+            else
+                PATH=$1:$PATH
+            fi
+    esac
+}
+
 ## load local configuration
 test -e ~/.env.local   && source ~/.env.local
 test -e ~/.zshrc.local && source ~/.zshrc.local
+
+unset -f pathmunge
 
 ## initialize prompt
 if [ -e ~/.prompt.zsh ]; then
