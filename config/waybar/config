@@ -24,7 +24,7 @@
 {
     "ipc": true,
     "modules-left": [
-        "custom/start",
+        "image#start",
         "sway/workspaces",
         "custom/layout",
         "sway/mode"
@@ -80,10 +80,11 @@
         "escape": true,
         "exec": "~/dotfiles/scripts/waybar-platform-profile.ers"
     },
-    "custom/start": {
-        "format": "",
+    "image#start": {
+        "path": "/usr/share/pixmaps/fedora-logo-sprite.png",
+        "size": 16,
         "tooltip-format": "Click here to begin",
-        "on-click": "nwggrid"
+        "on-click": "swaymsg exec \\$menu"
     },
     "custom/media": {
         "format": "{}",
