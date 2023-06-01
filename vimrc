@@ -27,7 +27,7 @@ Plug 'nanotech/jellybeans.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 "Plug 'vim-scripts/let-modeline.vim'
-Plug 'jlanzarotta/bufexplorer'
+Plug 'jlanzarotta/bufexplorer', LoadIf(!executable('fzf'))
 
 " Behavior/General
 Plug 'easymotion/vim-easymotion'
@@ -87,6 +87,7 @@ Plug 'PProvost/vim-ps1'
 "Plug 'othree/xml.vim'
 Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
 Plug 'rust-lang/rust.vim'
+Plug 'habamax/vim-asciidoctor'
 
 unlet has_async
 unlet has_nvim_lsp
@@ -258,8 +259,12 @@ let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 let g:ale_disable_lsp = 1
 let g:ale_pattern_options_enabled = 1
 let g:ale_pattern_options = {
-    \ '\.\(c\|cpp\|h\|hpp\)$': {'ale_enabled': 0, 'ale_linters': [], 'ale_fixers': []},
-    \ '\.rs$': {'ale_enabled': 0, 'ale_linters': [], 'ale_fixers': []}
+    \ '\.\(c\|cpp\|h\|hpp\)$': {'ale_enabled': 0},
+    \ '\.rs$': {'ale_enabled': 0}
+    \ }
+
+let g:ale_linter_aliases = {
+    \ 'asciidoctor': ['asciidoc'],
     \ }
 
 function! s:cmd(...)
@@ -462,17 +467,17 @@ let g:ctrlp_user_command = {
 if executable('fzf') && executable('rg')
     set grepprg=rg\ --vimgrep
 
-    let $FZF_DEFAULT_COMMAND='rg --files --follow . 2> nul'
+    let $FZF_DEFAULT_COMMAND='rg --files --follow . '
 
     command! -bang -nargs=* Find
       \ call fzf#vim#grep(
-      \   'rg --column --line-number --no-heading --color=always --smart-case --fixed-strings --hidden -L '.shellescape(<q-args>),
+      \   'rg --column --line-number --no-heading --color=always --smart-case --fixed-strings --hidden -L -- '.shellescape(<q-args>),
       \   1,
       \   <bang>0)
 
     command! -bang -nargs=* Rg
       \ call fzf#vim#grep(
-      \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
+      \   'rg --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
       \   <bang>0 ? fzf#vim#with_preview('up:60%')
       \           : fzf#vim#with_preview('right:50%:hidden', '?'),
       \   <bang>0)
@@ -495,4 +500,8 @@ endif
 "-------------------------------------------------------------------------------
 " Buffer explorer
 "-------------------------------------------------------------------------------
-noremap gb   :BufExplorerHorizontalSplit<CR>
+if executable('fzf')
+    noremap gb  :Buffers<CR>
+else
+    noremap gb  :BufExplorerHorizontalSplit<CR>
+endif
