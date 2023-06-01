@@ -6,7 +6,14 @@ syntax: glob
 
 syntax: rootglob
 .cache/
+.editorconfig
+.envrc
 .git/
 .gdb_history
 .gdbinit
+# fd/ripgrep don't support .hgignore
+.gitignore
+.ignore
 .reviewboardrc
+compile_commands.json
+compile_flags.txt

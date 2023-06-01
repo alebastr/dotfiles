@@ -5,6 +5,7 @@ tweakdefaults = True
 username = Aleksei Bavshin <alebastr89@gmail.com>
 
 [diff]
+git = 1
 showfunc = 1
 
 [extensions]
