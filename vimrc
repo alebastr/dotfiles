@@ -71,10 +71,6 @@ Plug 'autozimu/LanguageClient-neovim', LoadIf(!has_nvim_lsp, {
 
 " Completion
 let deoplete_opts = has('nvim') ? { 'do': ':UpdateRemotePlugins' } : {}
-" tag: 5.2 is the last compatible with python3-msgpack < 1.0.0
-if py3eval('__import__("msgpack").version[0]') < 1
-    let deoplete_opts = extend(deoplete_opts, { 'tag': '5.2' })
-endif
 Plug 'Shougo/deoplete.nvim', LoadIf(has_nvim_rpc, deoplete_opts)
 unlet deoplete_opts
 
