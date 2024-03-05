@@ -1,0 +1,61 @@
+// -*- mode: jsonc -*-
+[{
+    "include": "${XDG_CONFIG_HOME:-$HOME/.config}/waybar/modules.jsonc",
+    "height": 28,
+    "ipc": true,
+    "spacing": 4, // Gaps between modules (4px)
+    "modules-left": [
+        "image#start",
+        "sway/workspaces",
+        "sway/scratchpad",
+        "custom/layout",
+        "sway/mode"
+    ],
+    "modules-center": [
+        "sway/window"
+    ],
+    "modules-right": [
+        "idle_inhibitor",
+        "pulseaudio",
+        "sway/language",
+        "battery",
+        "custom/platform-profile",
+        "clock",
+        "tray"
+    ]
+}, {
+    "id": "bottom",
+    "include": "${XDG_CONFIG_HOME:-$HOME/.config}/waybar/modules.jsonc",
+    "ipc": true,
+    "position": "bottom",
+    "spacing": 4, // Gaps between modules (4px)
+    "modes": {
+        "invisible": {
+            "layer": "bottom",
+            "passthrough": false,
+            "visible": true
+        }
+    },
+    "modules-left": [
+        // need this to apply styles for a focused window
+        "sway/window"
+    ],
+    "modules-center": [
+        "wlr/taskbar"
+    ],
+    "modules-right": [
+        // "mpris",
+        // "mpd",
+        "network",
+        "cpu",
+        "memory",
+        "temperature",
+        "backlight"
+        // "keyboard-state"
+    ],
+    // Modules configuration
+    "sway/window": {
+        "format": "",
+        "icon": false
+    }
+}]

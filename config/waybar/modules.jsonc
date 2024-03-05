@@ -1,0 +1,218 @@
+// -*- mode: jsonc -*-
+{
+    // Modules configuration
+    "image#start": {
+        "path": "/usr/share/pixmaps/fedora-logo-sprite.png",
+        "size": 16,
+        "tooltip-format": "Click here to begin",
+        "on-click": "swaymsg exec \\$menu"
+    },
+    "sway/workspaces": {
+        "disable-scroll": true,
+        // "all-outputs": true,
+        "warp-on-scroll": false,
+        "format": "{name}: {icon}",
+        "format-icons": {
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": "",
+            "6": "",
+            "7": "",
+            // "urgent": "",
+            // "focused": "",
+            "default": ""
+        }
+    },
+    "wlr/taskbar": {
+        // "all-outputs": true,
+        "on-click": "activate",
+        "tooltip": "[{short_state}] {title}"
+    },
+    "keyboard-state": {
+        "numlock": true,
+        "capslock": true,
+        "format": "{name} {icon}",
+        "format-icons": {
+            "locked": "",
+            "unlocked": ""
+        }
+    },
+    "sway/language": {
+        "format": "{flag}",
+        "tooltip-format": "{long}",
+        "hide-single-layout": true,
+        "on-click": "swaymsg input type:keyboard xkb_switch_layout next",
+        "on-click-right": "swaymsg input type:keyboard xkb_switch_layout prev"
+    },
+    "sway/mode": {
+        "format": "{}"
+    },
+    "sway/scratchpad": {
+        "format": "{icon} {count}",
+        "show-empty": false,
+        "format-icons": ["", ""],
+        "tooltip": true,
+        "tooltip-format": "{app}: {title}"
+    },
+    "sway/window": {
+        "icon": true,
+        "icon-size": 16
+    },
+    "mpd": {
+        "format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}% ",
+        "format-disconnected": "Disconnected ",
+        "format-stopped": "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped ",
+        "unknown-tag": "N/A",
+        "interval": 5,
+        "consume-icons": {
+            "on": " "
+        },
+        "random-icons": {
+            "off": "<span color=\"#f53c3c\"></span> ",
+            "on": " "
+        },
+        "repeat-icons": {
+            "on": " "
+        },
+        "single-icons": {
+            "on": "1 "
+        },
+        "state-icons": {
+            "paused": "",
+            "playing": ""
+        },
+        "tooltip-format": "MPD (connected)",
+        "tooltip-format-disconnected": "MPD (disconnected)"
+    },
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "",
+            "deactivated": ""
+        }
+    },
+    "tray": {
+        // "icon-size": 21,
+        "spacing": 5
+    },
+    "clock": {
+        "format": "{:%a %b %d %R %Z}",
+        "format-alt": "{:%R}",
+        "locale": "en_US.UTF-8",
+        "timezones": ["", "UTC", "Europe/Moscow", "Asia/Novosibirsk"],
+        "tooltip-format": "{timezoned_time_list}\n{calendar}",
+        "actions": {
+            "on-scroll-up": "shift_up",
+            "on-scroll-down": "shift_down"
+        }
+    },
+    "cpu": {
+        "format": "{usage:2}% ",
+        "states": {
+            "medium": 50,
+            "high": 80
+        },
+        "tooltip": false
+    },
+    "memory": {
+        "format": "{:2}% "
+    },
+    "temperature": {
+        // "thermal-zone": 2,
+        // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
+        "critical-threshold": 80,
+        // "format-critical": "{temperatureC}°C {icon}",
+        "format": "{temperatureC}°C {icon}",
+        "format-icons": ["", "", ""]
+    },
+    "backlight": {
+        // "device": "acpi_video1",
+        "format": "{percent:2}% {icon}",
+        "format-icons": ["🌑", "🌘", "🌗", "🌖", "🌕"],
+        "on-scroll-up": "brightnessctl set +1% >/dev/null",
+        "on-scroll-down": "brightnessctl set 1%- >/dev/null"
+    },
+    "battery": {
+        "states": {
+            // "good": 95,
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{capacity:2}% {icon}",
+        "format-full": "{capacity:2}% {icon}",
+        "format-charging": "{capacity:2}% ",
+        "format-plugged": "{capacity:2}% ",
+        "format-alt": "{time} {icon}",
+        // "format-good": "", // An empty format will hide the module
+        // "format-full": "",
+        "format-icons": ["", "", "", "", ""]
+    },
+    "power-profiles-daemon": {
+      "format": "{icon}",
+      "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
+      "tooltip": true,
+      "format-icons": {
+        "default": "",
+        "performance": "",
+        "balanced": "",
+        "power-saver": ""
+      }
+    },
+    "network": {
+        // "interface": "wlp2*", // (Optional) To force the use of this interface
+        "format-wifi": "{essid} ({signalStrength}%) ",
+        "format-ethernet": "{ipaddr}/{cidr} ",
+        "tooltip-format": "{ifname} via {gwaddr} ",
+        "format-linked": "{ifname} (No IP) ",
+        "format-disconnected": "Disconnected ⚠",
+        "format-alt": "{ifname}: {ipaddr}/{cidr}"
+    },
+    "pulseaudio": {
+        // "scroll-step": 1, // %, can be a float
+        "format": "{volume:2}% {icon} {format_source}",
+        "format-bluetooth": "{volume:2}% {icon} {format_source}",
+        "format-bluetooth-muted": " {icon} {format_source}",
+        "format-muted": " {format_source}",
+        "format-source": "{volume:2}% ",
+        "format-source-muted": "",
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", "", ""]
+        },
+        "on-click": "pavucontrol-qt"
+    },
+    "custom/media": {
+        "format": "{icon} {}",
+        "return-type": "json",
+        "tooltip": true,
+        "max-length": 50,
+        "on-click": "playerctl play-pause",
+        "format-icons": {
+            "spotify": "",
+            "default": "🎜"
+        },
+        "escape": true,
+        "exec": "~/dotfiles/scripts/waybar-mediaplayer.py 2> /dev/null"
+    },
+    "custom/layout": {
+        "format": "[{}]",
+        "return-type": "json",
+        "tooltip": true,
+        "escape": true,
+        "exec": "~/dotfiles/scripts/waybar-container-layout.ers"
+    },
+    "custom/platform-profile": {
+        "format": "{}",
+        "return-type": "json",
+        "tooltip": true,
+        "escape": true,
+        "exec": "~/dotfiles/scripts/waybar-platform-profile.ers"
+    }
+}
