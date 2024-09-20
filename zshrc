@@ -31,7 +31,9 @@ SAVEHIST=2000
 ## automatically decide when to page a list of completions
 #LISTMAX=0
 
-#zstyle ':vcs_info:*' enable hg svn git cvs
+zstyle ':vcs_info:*' enable hg git
+zstyle ':vcs_info:*' disable-patterns "${(b)HOME}/winhome(|/*)"
+zstyle ':vcs_info:hg:*' get-bookmarks true
 
 ## disable mail checking
 MAILCHECK=0
