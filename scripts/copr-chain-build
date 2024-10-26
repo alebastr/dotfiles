@@ -1,0 +1,60 @@
+#!/bin/bash
+set -e
+
+COPRREPO=
+declare -a COPRARGS=()
+declare -a PACKAGES=()
+
+get-srpm() {
+    pushd "$1"
+    PACKAGE="$(fedpkg verrel).src.rpm"
+    if [[ ! -f $PACKAGE ]]; then
+        fedpkg srpm
+    fi
+    popd
+    PACKAGE="$1/$PACKAGE"
+}
+
+queue-package() {
+    local PACKAGE=$1
+
+    if [[ -d $PACKAGE ]]; then
+        get-srpm "$PACKAGE" >/dev/null
+    elif [[ ! -f $PACKAGE ]]; then
+        echo "package not found: $PACKAGE"
+        exit 1
+    fi
+
+    PACKAGES+=("$PACKAGE")
+}
+
+build-stage() {
+if [[ $# -eq 0 ]]; then
+        echo "no packages specified"
+        exit 1
+    fi
+
+    copr build "$COPRREPO" "${COPRARGS[@]}" "$@"
+}
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+    -*)
+        COPRARGS+=("$1")
+        ;;
+    :)
+        build-stage "${PACKAGES[@]}"
+        PACKAGES=()
+        ;;
+    *)
+        if [[ -z $COPRREPO ]]; then
+            COPRREPO=$1
+        else
+            queue-package "$1"
+        fi
+        ;;
+    esac
+    shift
+done
+
+build-stage "${PACKAGES[@]}"
