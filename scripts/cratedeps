@@ -1,0 +1,45 @@
+#!/bin/bash
+set -e
+
+repoquery-rawhide () {
+    dnf repoquery --releasever rawhide \
+        --repo rawhide --repo rawhide-source \
+        "$@"
+}
+
+repoquery-branched () {
+    RELEASEVER=$1; shift;
+    dnf repoquery --quiet --releasever "$RELEASEVER" \
+        --repo fedora --repo fedora-source \
+        --repo updates --repo updates-source \
+        --repo updates-testing --repo updates-testing-source \
+        "$@"
+}
+
+declare -a VERSIONS=()
+declare -a ARGS=()
+while [ $# -gt 0 ]; do
+    case "$1" in
+    --rawhide|--[[:digit:]][[:digit:]])
+        VERSIONS+=("${1##*-}")
+        shift;;
+    *)
+        ARGS+=(--whatdepends "rust-$1-devel" --whatdepends "rust-$1+*-devel")
+        shift;;
+    esac
+done
+
+if [[ ${#VERSIONS} -eq 0 ]]; then
+    VERSIONS+=(rawhide)
+fi
+
+for version in "${VERSIONS[@]}"; do
+    echo "> running query for Fedora $version"
+    declare -a REPOQUERY=(repoquery-rawhide)
+    if [[ $version != rawhide ]]; then
+        REPOQUERY=(repoquery-branched "$version")
+    fi
+
+    "${REPOQUERY[@]}" --quiet "${ARGS[@]}" |\
+        sort -u
+done
