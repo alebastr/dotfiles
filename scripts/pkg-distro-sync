@@ -1,0 +1,41 @@
+#!/usr/local/bin/perl
+# vim: et sw=4 ts=4
+
+use strict;
+use warnings;
+use utf8;
+
+my ($do) = @ARGV;
+
+my %packages;
+my @install;
+my $pipe;
+
+system "pkg update";
+
+open( $pipe, "pkg query -a '%n|%v' |" ) or die "pkg query";
+while (<$pipe>) {
+    chomp;
+    my ( $name, $version ) = split(/\|/);
+    $packages{$name} = $version;
+}
+
+open( $pipe, "pkg rquery '%n|%v' " . join( " ", keys %packages ) . " |" )
+  or die "pkg rquery";
+while (<$pipe>) {
+    chomp;
+    my ( $name, $version ) = split(/\|/);
+
+    next if ( $name eq "pkg" );
+
+    if ( $packages{$name} ne $version ) {
+        print "$name $packages{$name} -> $version\n";
+        push( @install, $name );
+    }
+}
+
+$do = defined $do && ( $do eq "-y" || $do eq "--yes" );
+
+if ( scalar(@install) > 0 && $do ) {
+    system "pkg install --force " . ( join " ", @install );
+}
