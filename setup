@@ -1,0 +1,68 @@
+#!/bin/sh
+
+SELF=$(realpath "$0")
+DOTFILES=$(dirname "$SELF")
+
+DEBUG=
+FORCE=
+
+debug () { test -n "$DEBUG" && echo "[D] $*"; }
+warn () { echo "[W] $*"; }
+
+abspath () {
+    if [ "${2#/}" = "$2" ]; then
+        echo "$1/$2"
+    else
+        echo "$2"
+    fi
+}
+
+do_install () {
+    SRC=$(abspath "$DOTFILES" "$1")
+    DST=$(abspath "$HOME" "$2")
+
+    debug "Installing $SRC to ~${DST##"$HOME"}"
+
+    if [ -L "$DST" ] || [ -e "$DST" ]; then
+        warn "Target file ~${DST##"$HOME"} already exists"
+        test -z "$FORCE" && return
+        rm -f "$DST"
+    fi
+
+    DESTDIR=$(dirname "$DST")
+    test -d "$DESTDIR" || mkdir -p "$DESTDIR"
+    ln -sf "$SRC" "$DST"
+}
+
+while [ $# -gt 0 ]; do
+    case $1 in
+    -f|--force)
+        FORCE=1
+        ;;
+    -v|--verbose)
+        DEBUG=1
+        ;;
+    *)
+        warn "Unknown argument: $1"
+        ;;
+    esac
+    shift
+done
+
+debug "Running from $DOTFILES"
+
+XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
+mkdir -p "$XDG_CONFIG_HOME"
+
+do_install tmux.conf .tmux.conf
+do_install zprofile  .zprofile
+do_install zshrc     .zshrc
+
+# VIM/Neovim
+if [ ! -f ~/.vim/autoload/plug.vim ]; then
+    curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+fi
+do_install vimrc .vimrc
+do_install vimrc .vim/init.vim
+ln -sf ~/.vim "$XDG_CONFIG_HOME/nvim"
