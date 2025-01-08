@@ -177,11 +177,6 @@ else
     autocmd GUIEnter * call InitGVim()
 endif
 "-------------------------------------------------------------------------------
-"  highlight paired brackets
-"-------------------------------------------------------------------------------
-highlight MatchParen ctermbg=blue guibg=lightyellow
-
-"-------------------------------------------------------------------------------
 " Keybindings
 "-------------------------------------------------------------------------------
 " imap {<CR> {<CR>}<Esc>O
@@ -287,7 +282,7 @@ let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 " deoplete
 "-------------------------------------------------------------------------------
 let g:deoplete#enable_at_startup = 1
-let g:python3_host_prog = '/usr/bin/python3'
+let g:python3_host_prog = exepath('python3')
 
 "-------------------------------------------------------------------------------
 " netrw

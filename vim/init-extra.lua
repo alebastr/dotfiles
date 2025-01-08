@@ -1,5 +1,8 @@
 -- Configuration specific for Neovim
 
+-- Lua 5.1 and LuaJIT compat
+table.unpack = table.unpack or unpack
+
 Result = { ok = false, value = nil }
 
 function Result:new (o)
@@ -95,7 +98,7 @@ local servers = {
             }
         }
     },
-    tsserver = {},
+    ts_ls = {},
 }
 
 try_require("catppuccin"):map(function(x)
@@ -135,7 +138,7 @@ end)
 
 try_require('nvim-treesitter.configs'):map(function(x)
     x.setup {
-        ensure_installed = { 'c', 'cpp',  'markdown', 'typescript', 'tsx' },
+        ensure_installed = { 'c', 'cpp',  'just', 'markdown', 'typescript', 'tsx' },
         highlight = {
             enable = true,
         },
