@@ -15,12 +15,6 @@ try | exec 'pythonx' 'pass' | catch | endtry
 " Let's start from this
 Plug 'tpope/vim-sensible'
 
-" Check that (n)vim is capablle of running neovim remote plugins
-" and load shims if necessary
-let has_nvim_rpc=has('nvim') || (version >= 800 && has('python3'))
-Plug 'roxma/nvim-yarp', LoadIf(has_nvim_rpc && !has('nvim'))
-Plug 'roxma/vim-hug-neovim-rpc', LoadIf(has_nvim_rpc && !has('nvim'))
-
 " Look and feel
 Plug 'vim-scripts/xterm16.vim'
 Plug 'nanotech/jellybeans.vim'
@@ -50,7 +44,6 @@ Plug 'mattn/emmet-vim'
 Plug 'vim-syntastic/syntastic', LoadIf(!has_async)
 Plug 'dense-analysis/ale', LoadIf(has_async)
 Plug 'sbdchd/neoformat'
-Plug 'editorconfig/editorconfig-vim'
 Plug 'jamessan/vim-gnupg'
 
 " Version Control
@@ -61,18 +54,15 @@ Plug 'tpope/vim-fugitive'
 " Language Server
 Plug 'neovim/nvim-lspconfig', LoadIf(has_nvim_lsp)
 Plug 'p00f/clangd_extensions.nvim', LoadIf(has_nvim_lsp)
-Plug 'deoplete-plugins/deoplete-lsp', LoadIf(has_nvim_lsp)
 Plug 'ojroques/nvim-lspfuzzy', LoadIf(has_nvim_lsp)
-Plug 'autozimu/LanguageClient-neovim', LoadIf(!has_nvim_lsp, {
-    \ 'branch': 'next',
-    \ 'do': (has('win32') ? 'powershell.exe -ExecutionPolicy Bypass -File install.ps1'
-            \ : 'bash install.sh')
-    \ })
 
 " Completion
-let deoplete_opts = has('nvim') ? { 'do': ':UpdateRemotePlugins' } : {}
-Plug 'Shougo/deoplete.nvim', LoadIf(has_nvim_rpc, deoplete_opts)
-unlet deoplete_opts
+Plug 'hrsh7th/cmp-nvim-lsp', LoadIf(has_nvim_lsp)
+Plug 'hrsh7th/cmp-buffer', LoadIf(has_nvim_lsp)
+Plug 'hrsh7th/cmp-path', LoadIf(has_nvim_lsp)
+Plug 'hrsh7th/cmp-cmdline', LoadIf(has_nvim_lsp)
+Plug 'hrsh7th/nvim-cmp', LoadIf(has_nvim_lsp)
+Plug 'quangnguyen30192/cmp-nvim-ultisnips', LoadIf(has_nvim_lsp)
 
 " Languages
 Plug 'nvim-treesitter/nvim-treesitter', LoadIf(has('nvim'), { 'do': ':TSUpdate' })
@@ -87,7 +77,6 @@ Plug 'habamax/vim-asciidoctor'
 
 unlet has_async
 unlet has_nvim_lsp
-unlet has_nvim_rpc
 call plug#end()
 
 set encoding=utf-8
@@ -108,7 +97,7 @@ set signcolumn=yes  " Always show sign column
 set showmatch       " showmatch: Show the matching bracket for the last ')'?
 set novisualbell    " visual bell instead of beeping
 set wildignore=*.bak,*.o,*.e,*~ " wildmenu: ignore these extensions
-set completeopt=menuone,noselect
+set completeopt=menu,menuone,noselect
 set confirm
 " airline already displays mode
 set noshowmode
@@ -245,13 +234,6 @@ let g:lisp_rainbow = 1
 "===============================================================================
 
 "-------------------------------------------------------------------------------
-" Snippets
-"-------------------------------------------------------------------------------
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-
-"-------------------------------------------------------------------------------
 " Language servers and plugins
 "-------------------------------------------------------------------------------
 let g:ale_disable_lsp = 1
@@ -277,12 +259,6 @@ nnoremap <silent> <A-S-F> :Neoformat<CR>
 "-------------------------------------------------------------------------------
 
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
-
-"-------------------------------------------------------------------------------
-" deoplete
-"-------------------------------------------------------------------------------
-let g:deoplete#enable_at_startup = 1
-let g:python3_host_prog = exepath('python3')
 
 "-------------------------------------------------------------------------------
 " netrw
