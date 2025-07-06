@@ -1,8 +1,5 @@
 -- Configuration specific for Neovim
 
--- Lua 5.1 and LuaJIT compat
-table.unpack = table.unpack or unpack
-
 Result = { ok = false, value = nil }
 
 function Result:new(o)
@@ -76,7 +73,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 local servers = {
     clangd = {},
-    lua_ls = {},
+    lua_ls = {}, -- https://luals.github.io/wiki/build/
     pylsp = {},
     rust_analyzer = {
         settings = {
@@ -94,9 +91,22 @@ local servers = {
         }
     },
     ts_ls = {},
+    yamlls = { -- https://github.com/redhat-developer/yaml-language-server
+        settings = {
+            yaml = {
+                completion = true,
+                format = { enable = true, singleQuote = true },
+                schemas = {
+                    ['https://json.schemastore.org/dependabot-2.0.json'] = '/.github/dependabot.yml',
+                    ['https://json.schemastore.org/github-workflow.json'] = '/.github/workflows/*',
+                },
+                validate = true,
+            },
+        },
+    },
 }
 
-try_require("catppuccin"):map(function(x)
+try_require('catppuccin'):map(function(x)
     x.setup {
         transparent_background = true,
         integrations = {
@@ -118,7 +128,7 @@ end)
 
 try_require('cmp'):map(function(cmp)
     local compare = require('cmp.config.compare')
-    local cmp_ultisnips_mappings = require("cmp_nvim_ultisnips.mappings")
+    local cmp_ultisnips_mappings = require('cmp_nvim_ultisnips.mappings')
 
     local format_source_name = function(x)
         local names = {
@@ -151,7 +161,7 @@ try_require('cmp'):map(function(cmp)
         }),
         snippet = {
             expand = function(args)
-                vim.fn["UltiSnips#Anon"](args.body)
+                vim.fn['UltiSnips#Anon'](args.body)
             end
         },
         sorting = {
@@ -180,6 +190,7 @@ try_require('cmp'):map(function(cmp)
         }, {
             { name = 'buffer', keyword_length = 2, max_item_count = 5 }
         }),
+        view = { entries = 'native' },
         window = {
             -- completion = cmp.config.window.bordered(),
             documentation = cmp.config.window.bordered(),
@@ -196,6 +207,7 @@ try_require('cmp'):map(function(cmp)
         }, {
             { name = 'cmdline' }
         }),
+        view = { entries = 'wildmenu' },
     })
 
     return cmp
@@ -217,17 +229,28 @@ end):unwrap_or_else(function()
 end)
 
 try_require('lspconfig'):map(function(lspconfig)
-    for lsp, opt in pairs(servers) do
-        lspconfig[lsp].setup {
+    if vim.version.ge(vim.version(), { 0, 11 }) then
+        vim.lsp.config('*', {
             capabilities = lsp_caps,
-            flags = { debounce_text_changes = 150, },
-            table.unpack(opt)
-        }
+            flags = { debounce_text_changes = 150 }
+        })
+
+        for lsp, opt in pairs(servers) do
+            vim.lsp.enable(lsp)
+            vim.lsp.config(lsp, opt)
+        end
+    else
+        for lsp, opt in pairs(servers) do
+            opt.capabilities = opt.capabilities or lsp_caps
+            opt.flags = opt.flags or {}
+            opt.flags.debounce_text_changes = 150
+            lspconfig[lsp].setup(opt)
+        end
     end
     return lspconfig
 end)
 
-try_require("lspfuzzy"):map(function(x)
+try_require('lspfuzzy'):map(function(x)
     x.setup {}
     return x
 end)
